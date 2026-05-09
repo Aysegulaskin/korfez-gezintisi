@@ -771,3 +771,23 @@ body{
 
     cursor:pointer;
 }
+.user-box{
+
+    position:absolute;
+
+    top:20px;
+    right:20px;
+
+    z-index:9999;
+
+    background:#127ca8;
+
+    color:white;
+
+    padding:12px 20px;
+
+    border-radius:12px;
+
+    font-weight:bold;
+
+}

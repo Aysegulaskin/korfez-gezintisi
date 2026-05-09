@@ -425,6 +425,15 @@ if(registerBtn){
                 }
             );
 const data = await response.json();
+console.log(response.status);
+console.log(data);
+if(!response.ok){
+
+    alert(data.error || "Giriş başarısız 😢");
+
+    return;
+
+}
 
             console.log(data);
 
@@ -467,6 +476,13 @@ if(loginBtn){
             );
 
             const data = await response.json();
+            if(!response.ok){
+
+    alert(data.error || "Kayıt başarısız 😢");
+
+    return;
+
+}
 
             localStorage.setItem(
                 "token",
@@ -476,9 +492,28 @@ if(loginBtn){
             localStorage.setItem(
                 "username",
                 data.username
-            );
 
+);
             alert("Giriş başarılı 😄");
+            localStorage.setItem(
+    "isLoggedIn",
+    "true"
+);
+
+loginModal.classList.add("hidden");
+
+loginOpenBtn.style.display = "none";
+
+registerOpenBtn.style.display = "none";
+
+const userDiv = document.createElement("div");
+
+userDiv.className = "user-box";
+
+userDiv.innerText =
+"👤 " + data.username;
+
+document.body.appendChild(userDiv);
  }catch(err){
 
             console.log(err);
@@ -491,3 +526,41 @@ if(loginBtn){
 }
 
 console.log("SCRIPT ÇALIŞTI 😄");
+window.addEventListener("load", () => {
+
+    const isLoggedIn =
+    localStorage.getItem("isLoggedIn");
+
+    const username =
+    localStorage.getItem("username");
+
+    if(isLoggedIn === "true"){
+
+        if(loginOpenBtn){
+            loginOpenBtn.style.display = "none";
+        }
+
+        if(registerOpenBtn){
+            registerOpenBtn.style.display = "none";
+        }
+
+        const oldUser =
+        document.querySelector(".user-box");
+
+        if(!oldUser){
+
+            const userDiv =
+            document.createElement("div");
+
+            userDiv.className = "user-box";
+
+            userDiv.innerText =
+            "👤 " + username;
+
+            document.body.appendChild(userDiv);
+
+        }
+
+    }
+
+});
