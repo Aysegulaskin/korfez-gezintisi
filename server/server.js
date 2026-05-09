@@ -18,7 +18,17 @@ app.use(express.json());
 
 // POSTGRESQL BAĞLANTISI
 
-   const pool = new Pool({
+const pool = new Pool({
+
+    connectionString:
+    "postgresql://korfez_db_user:2UYmsLZ03HOWHx8SZ7iCpMcTof0gbc6x@dpg-d7vcgjpj2pic73ec5pd0-a.oregon-postgres.render.com/korfez_db",
+
+    ssl: {
+        rejectUnauthorized: false
+    }
+
+});
+
 pool.query(`
 
 CREATE TABLE IF NOT EXISTS users (
@@ -40,23 +50,6 @@ CREATE TABLE IF NOT EXISTS users (
     console.log(err);
 
 });
-    connectionString:
-    "postgresql://korfez_db_user:2UYmsLZ03HOWHx8SZ7iCpMcTof0gbc6x@dpg-d7vcgjpj2pic73ec5pd0-a.oregon-postgres.render.com/korfez_db",
-
-    ssl: {
-        rejectUnauthorized: false
-    }
-
-});
-
-    database:"korfez_db",
-
-    password:"luna1234567",
-
-    port:5432
-
-});
-
 // TEST
 
 app.get("/", (req,res) => {
