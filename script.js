@@ -412,7 +412,7 @@ if(registerBtn){
         try{
 
             const response = await fetch(
-                "http://localhost:3000/register",
+                "https://korfez-backend.onrender.com/register",
                 {
                     method:"POST",
                     headers:{
@@ -453,7 +453,7 @@ if(loginBtn){
 
         try{
             const response = await fetch(
-                "http://localhost:3000/login",
+                "https://korfez-backend.onrender.com/login",
                 {
                     method:"POST",
                     headers:{
