@@ -19,7 +19,27 @@ app.use(express.json());
 // POSTGRESQL BAĞLANTISI
 
    const pool = new Pool({
+pool.query(`
 
+CREATE TABLE IF NOT EXISTS users (
+
+    id SERIAL PRIMARY KEY,
+
+    username VARCHAR(255) UNIQUE NOT NULL,
+
+    password TEXT NOT NULL
+
+)
+
+`).then(() => {
+
+    console.log("Users tablosu hazır 😄");
+
+}).catch(err => {
+
+    console.log(err);
+
+});
     connectionString:
     "postgresql://korfez_db_user:2UYmsLZ03HOWHx8SZ7iCpMcTof0gbc6x@dpg-d7vcgjpj2pic73ec5pd0-a.oregon-postgres.render.com/korfez_db",
 
