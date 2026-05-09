@@ -18,11 +18,16 @@ app.use(express.json());
 
 // POSTGRESQL BAĞLANTISI
 
-const pool = new Pool({
+   const pool = new Pool({
 
-    user:"postgres",
+    connectionString:
+    "postgresql://korfez_db_user:2UYmsLZ03HOWHx8SZ7iCpMcTof0gbc6x@dpg-d7vcgjpj2pic73ec5pd0-a.oregon-postgres.render.com/korfez_db",
 
-    host:"localhost",
+    ssl: {
+        rejectUnauthorized: false
+    }
+
+});
 
     database:"korfez_db",
 
