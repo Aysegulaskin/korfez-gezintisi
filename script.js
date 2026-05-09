@@ -3,8 +3,6 @@ const map = L.map('map', {
     attributionControl: false
 }).setView([39.50, 26.85], 10);
 
-// KÖRFEZ SINIRI
-
 const bounds = [
     [39.20, 26.45],
     [39.75, 27.20]
@@ -12,246 +10,71 @@ const bounds = [
 
 map.setMaxBounds(bounds);
 
-// HARİTA
-
 L.tileLayer(
 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 {
     maxZoom:20
 }).addTo(map);
-// BÖLGE VERİLERİ
 
 const regionData = {
 
     "Küçükkuyu": {
-
-        konaklama: [
+        konaklama:[
             "🏨 Palm Beach Hotel",
             "🏨 Glenn Hotel & Beach",
-            "🏨 Gürel Garden House",
-            "🏨 Sarissa Butik Otel"
+            "🏨 Gürel Garden House"
         ],
-
-        yemek: [
+                yemek:[
             "🍴 Alp Balık Evi",
-            "🍴 Sahil Balıkçısı",
-            "🍴 Ege cafe",
-            "🍴 Laden kahvaltı ",
-            "🍴 Zeytin Cafe"
+            "🍴 Ege Cafe"
         ],
-
-        plaj: [
+        plaj:[
             "🌊 Mıhlı Plajı",
-            "🌊 Küçükkuyu Sahili",
-            "🌊 Adatepe Sahili"
+            "🌊 Küçükkuyu Sahili"
         ],
-
-        aktivite: [
-            "🎣 Balık Tutma",
+        aktivite:[
             "🥾 Kaz Dağları Yürüyüşü",
             "🚤 Tekne Turu"
         ]
     },
 
     "Altınoluk": {
-
-        konaklama: [
-            "🏨 Rawda Resort Hotel",
-            "🏨 Altın Cesmeli Konak",
-            "🏨 Platanus Hotel"
-        ],
-
-        yemek: [
-            "🍴 Altınoluk Balık Evi",
-            "🍴 Sahil Cafe",
-            "🍴 Zeytin Restoran"
-        ],
-
-        plaj: [
-            "🌊 Altınoluk Sahili",
-            "🌊 Antandros Plajı"
-        ],
-
-        aktivite: [
-            "🥾 Doğa Yürüyüşü",
-            "🚤 Tekne Turu"
-        ]
+        konaklama:["🏨 Rawda Resort Hotel"],
+        yemek:["🍴 Sahil Cafe"],
+        plaj:["🌊 Altınoluk Sahili"],
+        aktivite:["🚤 Tekne Turu"]
     },
 
     "Güre": {
-
-        konaklama: [
-            "🏨 Ramada Resort Kazdağları",
-            "🏨 Güre Termal"
-        ],
-
-        yemek: [
-            "🍴 Güre Köftecisi",
-            "🍴 Kazdağı Sofrası"
-        ],
-
-        plaj: [
-            "🌊 Güre Sahili"
-        ],
-
-        aktivite: [
-            "♨️ Termal Spa",
-            "🥾 Doğa Gezisi"
-        ]
+        konaklama:["🏨 Güre Termal"],
+                yemek:["🍴 Kazdağı Sofrası"],
+        plaj:["🌊 Güre Sahili"],
+        aktivite:["♨️ Termal Spa"]
     },
 
     "Akçay": {
-
-        konaklama: [
-            "🏨 Akçayhan Hotel",
-            "🏨 Set Aria Hotel"
-        ],
-
-        yemek: [
-            "🍴 Akçay Sahil Cafe",
-            "🍴 Deniz Restaurant"
-        ],
-
-        plaj: [
-            "🌊 Akçay Plajı"
-        ],
-
-        aktivite: [
-            "🚴 Bisiklet Turu",
-            "🚤 Tekne Turu"
-        ]
-    },
-
-    "Zeytinli": {
-
-        konaklama: [
-            "🏨 Zeytinli Pansiyon"
-        ],
-
-        yemek: [
-            "🍴 Zeytinli Cafe"
-        ],
-
-        plaj: [
-            "🌊 Zeytinli Sahili"
-        ],
-
-        aktivite: [
-            "🎵 Festival Alanı"
-        ]
-    },
-
-    "Edremit": {
-
-        konaklama: [
-            "🏨 L'opera Deluxe Hotel"
-        ],
-
-        yemek: [
-            "🍴 Edremit Köftecisi"
-        ],
-
-        plaj: [
-            "🌊 Edremit Sahili"
-        ],
-
-        aktivite: [
-            "🏛 Tarihi Gezi"
-        ]
-    },
-
-    "Burhaniye": {
-
-        konaklama: [
-            "🏨 Burhaniye Otel"
-        ],
-
-        yemek: [
-            "🍴 İskele Balıkçısı"
-        ],
-
-        plaj: [
-            "🌊 Ören Plajı"
-        ],
-
-        aktivite: [
-            "🚴 Sahil Turu"
-        ]
-    },
-
-    "Gömeç": {
-
-        konaklama: [
-            "🏨 Gömeç Pansiyon"
-        ],
-
-        yemek: [
-            "🍴 Sahil Cafe"
-        ],
-
-        plaj: [
-            "🌊 Gömeç Sahili"
-        ],
-
-        aktivite: [
-            "🎣 Balıkçılık"
-        ]
+        konaklama:["🏨 Akçayhan Hotel"],
+        yemek:["🍴 Deniz Restaurant"],
+        plaj:["🌊 Akçay Plajı"],
+        aktivite:["🚴 Bisiklet Turu"]
     },
 
     "Ayvalık": {
-
-        konaklama: [
-            "🏨 Bacacan Otel",
-            "🏨 Orchis Hotel",
-            "🏨 Ayvalık Sea Resort"
-        ],
-
-        yemek: [
-            "🍴 Tik Mustafa",
-            "🍴 Deniz Yıldızı Restaurant"
-        ],
-
-        plaj: [
-            "🌊 Sarımsaklı",
-            "🌊 Badavut"
-        ],
-
-        aktivite: [
-            "🚤 Tekne Turu",
-            "🌅 Gün Batımı"
-        ]
+        konaklama:["🏨 Bacacan Otel"],
+        yemek:["🍴 Tik Mustafa"],
+        plaj:["🌊 Sarımsaklı"],
+        aktivite:["🌅 Gün Batımı"]
     },
 
     "Cunda Adası": {
-
-        konaklama: [
-            "🏨 Cunda Labris Hotel",
-            "🏨 Mai Pension"
-        ],
-
-        yemek: [
-            "🍴 Cunda Balıkçısı",
-            "🍴 Taş Kahve"
-        ],
-
-        plaj: [
-            "🌊 Patriça Koyu"
-        ],
-
-        aktivite: [
-            "🏛 Taş Sokak Gezisi"
-        ]
+        konaklama:["🏨 Cunda Labris Hotel"],
+        yemek:["🍴 Taş Kahve"],
+        plaj:["🌊 Patriça Koyu"],
+        aktivite:["🏛 Taş Sokak Gezisi"]
     }
 
 };
-
-// YERLER
-
 const locations = document.querySelectorAll(".location-item");
-
-// MARKERLAR
-
-// ÖZEL MARKER
 
 const customIcon = L.icon({
 
@@ -266,69 +89,44 @@ const customIcon = L.icon({
 
 });
 
-// MARKERLAR
-
 locations.forEach(location => {
 
     const lat = location.dataset.lat;
-
-    const lng = location.dataset.lng;
-
+       const lng = location.dataset.lng;
     const name = location.dataset.name;
 
     L.marker([lat,lng], {
-
         icon:customIcon
-
     })
-
     .addTo(map)
+    .bindPopup(`<b>${name}</b>`);
 
-    .bindPopup(`
-
-        <b style="font-size:18px;">
-            ${name}
-        </b>
-
-    `);
 });
 
-// CARD
-
 const infoCard = document.getElementById("infoCard");
-
 const cardTitle = document.getElementById("cardTitle");
-
 const cardImage = document.getElementById("cardImage");
-
 const cardText = document.getElementById("cardText");
-
 const closeCard = document.getElementById("closeCard");
-
 const tabButtons = document.querySelectorAll(".tab-btn");
-
 const tabContent = document.getElementById("tabContent");
 
 let currentRegion = "Küçükkuyu";
 
-// TAB İÇERİĞİ
-
 function renderTab(tab){
 
-    const data = regionData[currentRegion][tab];
+    const data = regionData[currentRegion]?.[tab] || [];
 
     let html = "<ul>";
 
     data.forEach(item => {
-        html += `<li>${item}</li>`;
+     html += `<li>${item}</li>`;
     });
 
     html += "</ul>";
 
     tabContent.innerHTML = html;
 }
-
-// TIKLAMA
 
 locations.forEach(location => {
 
@@ -338,9 +136,7 @@ locations.forEach(location => {
         const lng = location.dataset.lng;
 
         const name = location.dataset.name;
-
         const image = location.dataset.image;
-
         const description = location.dataset.description;
 
         currentRegion = name;
@@ -350,20 +146,26 @@ locations.forEach(location => {
         });
 
         cardTitle.innerText = name;
-
-        cardImage.src = image;
-
+          cardImage.src = image;
         cardText.innerText = description;
 
         infoCard.classList.remove("hidden");
 
         renderTab("konaklama");
+        favoriteBtn.innerText =
+"❤️ Favorilere Ekle";
 
     });
 
 });
 
-// TABLAR
+if(closeCard){
+
+    closeCard.addEventListener("click", () => {
+        infoCard.classList.add("hidden");
+    });
+
+}
 
 tabButtons.forEach(button => {
 
@@ -383,54 +185,41 @@ tabButtons.forEach(button => {
 
 });
 
-// KAPAT
-
-closeCard.addEventListener("click", () => {
-
-    infoCard.classList.add("hidden");
-
-});
 const themeToggle = document.getElementById("themeToggle");
 
 let darkMode = false;
 
-themeToggle.addEventListener("click", () => {
+if(themeToggle){
 
-    darkMode = !darkMode;
+    themeToggle.addEventListener("click", () => {
 
-    const mapDiv = document.getElementById("map");
+        darkMode = !darkMode;
 
-    if(darkMode){
+        const mapDiv = document.getElementById("map");
 
-        mapDiv.classList.remove("light-map");
-        mapDiv.classList.add("dark-map");
+        if(darkMode){
 
-        themeToggle.innerText = "🌙 Gece Modu Aktif";
-    }else{
+            mapDiv.classList.remove("light-map");
+            mapDiv.classList.add("dark-map");
 
-        mapDiv.classList.remove("dark-map");
-        mapDiv.classList.add("light-map");
+            themeToggle.innerText = "🌙 Gece Modu Aktif";
 
-        themeToggle.innerText = "☀️ Gündüz Modu Aktif";    }
+        }else{
 
-});
-// FAVORİLER
+            mapDiv.classList.remove("dark-map");
+            mapDiv.classList.add("light-map");
 
-// FAVORİLER
+            themeToggle.innerText = "☀️ Gündüz Modu Aktif";
+        }
 
-const favoriteBtn =
-document.getElementById("favoriteBtn");
+    });
 
-const favoritesList =
-document.getElementById("favoritesList");
+}
 
-const openFavorites =
-document.getElementById("openFavorites");
-
-const favoritesPanel =
-document.getElementById("favoritesPanel");
-
-// FAVORİLERİ GÖSTER
+const favoriteBtn = document.getElementById("favoriteBtn");
+const favoritesList = document.getElementById("favoritesList");
+const openFavorites = document.getElementById("openFavorites");
+const favoritesPanel = document.getElementById("favoritesPanel");
 
 function renderFavorites(){
 
@@ -440,106 +229,62 @@ function renderFavorites(){
     favoritesList.innerHTML = "";
 
     favorites.forEach(fav => {
-
         favoritesList.innerHTML += `
-
-            <li>
-                ❤️ ${fav}
-            </li>
-
+            <li>❤️ ${fav}</li>
         `;
 
     });
 
 }
 
-// FAVORİ EKLE
+if(favoriteBtn){
 
-favoriteBtn.addEventListener("click", () => {
+    favoriteBtn.addEventListener("click", () => {
 
-    let favorites =
-    JSON.parse(localStorage.getItem("favorites")) || [];
+        let favorites =
+        JSON.parse(localStorage.getItem("favorites")) || [];
 
-    if(!favorites.includes(currentRegion)){
+        if(!favorites.includes(currentRegion)){
 
-        favorites.push(currentRegion);
+            favorites.push(currentRegion);
 
-        localStorage.setItem(
-            "favorites",
-            JSON.stringify(favorites)
-        );
+            localStorage.setItem(
+                "favorites",
+                JSON.stringify(favorites)
+            );
 
-        renderFavorites();
+            renderFavorites();
 
-        favoriteBtn.innerText =
-        "❤️ Favorilere Eklendi";
+            favoriteBtn.innerText =
+            "❤️ Favorilere Eklendi";
+                    }
 
-    }
+    });
 
-});
+}
 
-// FAVORİ PANELİ
+if(openFavorites){
 
-openFavorites.addEventListener("click", () => {
+    openFavorites.addEventListener("click", () => {
+
+       if(favoritesPanel){
 
     favoritesPanel.classList.toggle("hidden");
 
-});
+}
 
-// SAYFA AÇILINCA FAVORİLERİ YÜKLE
+    });
+
+}
 
 renderFavorites();
-const bgMusic = document.getElementById("bgMusic");
 
+const bgMusic = document.getElementById("bgMusic");
 const musicBtn = document.getElementById("musicBtn");
 
 let musicPlaying = false;
 
-
-    if(!musicPlaying){
-
-        bgMusic.play();
-
-        musicBtn.innerText = "⏸ Müziği Durdur";
-
-    }else{
-
-        bgMusic.pause();
-
-        musicBtn.innerText = "🎵 Müzik";
-    }
-
-    musicPlaying = !musicPlaying;
-
-const searchInput = document.querySelector(".search-box input");
-
-searchInput.addEventListener("input", () => {
-
-    const value = searchInput.value.toLowerCase();
-s
-    locations.forEach(location => {
-
-        const name = location.dataset.name.toLowerCase();
-
-        if(name.includes(value)){
-            location.style.display = "block";
-        }else{
-            location.style.display = "none";
-        }
-
-    });
-
-});
-// FAVORİ PANELİ
-
-openFavorites.addEventListener("click", () => {
-
-    favoritesPanel.classList.toggle("hidden");
-
-});
-// MÜZİK
-
-if(musicBtn){
+if(musicBtn && bgMusic){
 
     musicBtn.addEventListener("click", () => {
 
@@ -564,8 +309,29 @@ if(musicBtn){
 
 }
 
-// AUTH
+const searchInput = document.getElementById("searchInput");
 
+if(searchInput){
+
+    searchInput.addEventListener("input", () => {
+        const value = searchInput.value.toLowerCase();
+
+        locations.forEach(location => {
+
+            const name =
+            location.dataset.name.toLowerCase();
+
+            if(name.includes(value)){
+                location.style.display = "block";
+            }else{
+                location.style.display = "none";
+            }
+
+        });
+
+    });
+
+}
 
 const loginOpenBtn =
 document.getElementById("loginOpenBtn");
@@ -585,127 +351,143 @@ document.getElementById("loginBtn");
 const registerBtn =
 document.getElementById("registerBtn");
 
-// MODAL AÇ
+if(loginOpenBtn){
 
-loginOpenBtn.addEventListener("click", () => {
+    loginOpenBtn.addEventListener("click", () => {
+        if(loginModal){
 
     loginModal.classList.remove("hidden");
 
-});
+}
+    });
 
-registerOpenBtn.addEventListener("click", () => {
+}
+
+if(registerOpenBtn){
+
+    registerOpenBtn.addEventListener("click", () => {
+        if(registerModal){
 
     registerModal.classList.remove("hidden");
 
-});
+}
+        
+    });
 
-// MODAL KAPAT
+}
 
-loginModal.addEventListener("click", (e) => {
+if(loginModal){
 
-    if(e.target === loginModal){
+    loginModal.addEventListener("click", (e) => {
 
-        loginModal.classList.add("hidden");
-
-    }
-
-});
-
-registerModal.addEventListener("click", (e) => {
-
-    if(e.target === registerModal){
-
-        registerModal.classList.add("hidden");
-
-    }
-
-});
-
-// REGISTER
-
-registerBtn.addEventListener("click", async () => {
-
-    const username =
-    document.getElementById("registerUsername").value;
-
-    const password =
-    document.getElementById("registerPassword").value;
-
-    const response = await fetch(
-
-        "http://localhost:3000/register",
-
-        {
-
-            method:"POST",
-
-            headers:{
-                "Content-Type":"application/json"
-            },
-
-            body:JSON.stringify({
-
-                username,
-                password
-
-            })
-
+        if(e.target === loginModal){
+            loginModal.classList.add("hidden");
         }
 
-    );
+    });
 
-    const data = await response.json();
+}
 
-    alert("Kayıt başarılı 😄");
+if(registerModal){
 
-});
+    registerModal.addEventListener("click", (e) => {
 
-// LOGIN
-
-loginBtn.addEventListener("click", async () => {
-
-    const username =
-    document.getElementById("loginUsername").value;
-
-    const password =
-    document.getElementById("loginPassword").value;
-
-    const response = await fetch(
-
-        "http://localhost:3000/login",
-
-        {
-
-            method:"POST",
-
-            headers:{
-                "Content-Type":"application/json"
-            },
-
-            body:JSON.stringify({
-
-                username,
-                password
-
-            })
-
+        if(e.target === registerModal){
+            registerModal.classList.add("hidden");
         }
 
-    );
+    });
+    }
 
-    const data = await response.json();
+if(registerBtn){
 
-    localStorage.setItem(
-        "token",
-        data.token
-    );
+    registerBtn.addEventListener("click", async () => {
 
-    localStorage.setItem(
-        "username",
-        data.username
-    );
+        const username =
+        document.getElementById("registerUsername").value;
 
-    alert("Giriş başarılı 😄");
+        const password =
+        document.getElementById("registerPassword").value;
 
-});
+        try{
+
+            const response = await fetch(
+                "http://localhost:3000/register",
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    body:JSON.stringify({
+                        username,
+                        password
+                    })
+                }
+            );
+const data = await response.json();
+
+            console.log(data);
+
+            alert("Kayıt başarılı 😄");
+
+        }catch(err){
+
+            console.log(err);
+
+            alert("Kayıt başarısız 😢");
+        }
+
+    });
+
+}
+
+if(loginBtn){
+
+    loginBtn.addEventListener("click", async () => {
+
+        const username =
+        document.getElementById("loginUsername").value;
+
+        const password =
+        document.getElementById("loginPassword").value;
+
+        try{
+            const response = await fetch(
+                "http://localhost:3000/login",
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    body:JSON.stringify({
+                        username,
+                        password
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            localStorage.setItem(
+                "token",
+                data.token
+            );
+
+            localStorage.setItem(
+                "username",
+                data.username
+            );
+
+            alert("Giriş başarılı 😄");
+ }catch(err){
+
+            console.log(err);
+
+            alert("Giriş başarısız 😢");
+        }
+
+    });
+
+}
+
 console.log("SCRIPT ÇALIŞTI 😄");

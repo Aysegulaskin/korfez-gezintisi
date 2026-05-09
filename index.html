@@ -1,43 +1,38 @@
+# DÜZELTİLMİŞ index.html
+
+```html
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Körfez Gezintisi</title>
 
-    <!-- LEAFLET -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-    <!-- FONT AWESOME -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=5">
+    <link rel="stylesheet" href="style.css?v=10">
 </head>
-
 <body>
-<!-- AUTH BUTTONS -->
+
+<!-- AUTH -->
 
 <div class="auth-buttons">
 
     <button id="loginOpenBtn">
-
         👤 Giriş Yap
-
     </button>
 
     <button id="registerOpenBtn">
-
         📝 Kayıt Ol
-
     </button>
 
 </div>
 
-<!-- LOGIN MODAL -->
+<!-- LOGIN -->
 
 <div class="auth-modal hidden" id="loginModal">
 
@@ -56,16 +51,14 @@
             placeholder="Şifre">
 
         <button id="loginBtn">
-
             Giriş Yap
-
         </button>
 
     </div>
 
 </div>
 
-<!-- REGISTER MODAL -->
+<!-- REGISTER -->
 
 <div class="auth-modal hidden" id="registerModal">
 
@@ -84,314 +77,194 @@
             placeholder="Şifre">
 
         <button id="registerBtn">
-
             Kayıt Ol
-
         </button>
 
     </div>
 
 </div>
-    <!-- SIDEBAR -->
-    <div class="sidebar">
 
-        <div class="logo">
-            <h1>KÖRFEZ<br>GEZİNTİSİ</h1>
-            <p>Kuzey Ege'yi keşfet</p>
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        <h1>KÖRFEZ<br>GEZİNTİSİ</h1>
+
+        <p>Kuzey Ege'yi keşfet</p>
+
+    </div>
+
+    <div class="sidebar-text">
+
+        <h2>Körfez Hattı</h2>
+
+        <p>
+            Küçükkuyu'dan Ayvalık'a uzanan
+            eşsiz Körfez hattını keşfet.
+        </p>
+
+    </div>
+
+    <div class="location-list">
+
+        <div class="location-item"
+            data-name="Küçükkuyu"
+            data-description="Kaz Dağları eteklerinde huzurlu bir sahil kasabası."
+            data-lat="39.5476"
+            data-lng="26.6238"
+            data-image="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200">
+            📍 Küçükkuyu
         </div>
 
-        <div class="sidebar-text">
+        <div class="location-item"
+            data-name="Altınoluk"
+            data-description="Temiz havası ve sahiliyle ünlü tatil beldesi."
+            data-lat="39.5798"
+            data-lng="26.7377"
+            data-image="https://images.unsplash.com/photo-1493558103817-58b2924bce98?q=80&w=1200">
+            📍 Altınoluk
+        </div>
 
-            <h2>Körfez Hattı</h2>
+        <div class="location-item"
+            data-name="Güre"
+            data-description="Termal otelleri ve doğasıyla ünlü bölge."
+            data-lat="39.5739"
+            data-lng="26.8797"
+            data-image="https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1200">
+            📍 Güre
+        </div>
 
-            <p>
-                Küçükkuyu'dan Ayvalık'a uzanan
-                bu eşsiz sahil şeridinde doğanın,
-                tarihin ve denizin tadını çıkarın.
+        <div class="location-item"
+            data-name="Akçay"
+            data-description="Sahili ve yaz atmosferiyle popüler bir bölge."
+            data-lat="39.5867"
+            data-lng="26.9290"
+            data-image="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1200">
+            📍 Akçay
+        </div>
+
+        <div class="location-item"
+            data-name="Ayvalık"
+            data-description="Taş evleri ve gün batımıyla ünlü Ege kasabası."
+            data-lat="39.3181"
+            data-lng="26.6935"
+            data-image="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200">
+            📍 Ayvalık
+        </div>
+
+        <div class="location-item"
+            data-name="Cunda Adası"
+            data-description="Dar sokakları ve deniz ürünleriyle ünlü ada."
+            data-lat="39.3274"
+            data-lng="26.6594"
+            data-image="https://images.unsplash.com/photo-1493558103817-58b2924bce98?q=80&w=1200">
+            📍 Cunda Adası
+        </div>
+
+    </div>
+
+    <!-- FAVORİLER -->
+
+    <div class="favorites-sidebar">
+
+        <button id="openFavorites" class="favorites-sidebar-btn">
+            ❤️ Favorilerim
+        </button>
+
+        <div class="favorites-panel hidden" id="favoritesPanel">
+
+            <ul id="favoritesList"></ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- SEARCH -->
+
+<div class="search-box">
+
+    <i class="fa-solid fa-magnifying-glass"></i>
+
+    <input type="text" id="searchInput" placeholder="Bir yer ara...">
+
+</div>
+
+<!-- THEME -->
+
+<button id="themeToggle" class="theme-toggle">
+    ☀️ Gündüz Modu Aktif
+</button>
+
+<!-- MAP -->
+
+<div id="map" class="light-map"></div>
+
+<!-- CARD -->
+
+<div class="info-card hidden" id="infoCard">
+
+    <button class="close-btn" id="closeCard">
+        ✕
+    </button>
+
+    <img id="cardImage" src="" alt="">
+
+    <div class="card-content">
+
+        <div class="weather-box">
+
+            <h3>☀️ Hava Durumu</h3>
+
+            <p id="weatherText">
+                27°C • Hafif Rüzgar
             </p>
 
-        </div>
-        <div class="location-list">
-<div class="location-list">
-
-    <!-- KÜÇÜKKUYU -->
-
-    <div class="location-item"
-        data-name="Küçükkuyu"
-        data-description="Kaz Dağları eteklerinde, sahili ve huzurlu atmosferiyle öne çıkan eşsiz bir sahil kasabası."
-        data-lat="39.5476"
-        data-lng="26.6238"
-        data-image="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200">
-
-        📍 Küçükkuyu
-
-    </div>
-
-    <!-- ALTINOLUK -->
-
-    <div class="location-item"
-        data-name="Altınoluk"
-        data-description="Temiz havası ve sahil yaşamıyla bilinen huzurlu bir tatil beldesi."
-        data-lat="39.5798"
-        data-lng="26.7377"
-        data-image="https://images.unsplash.com/photo-1493558103817-58b2924bce98?q=80&w=1200">
-
-        📍 Altınoluk
-
-    </div>
-
-    <!-- GÜRE -->
-
-    <div class="location-item"
-        data-name="Güre"
-        data-description="Termal otelleri ve doğal güzellikleri ile ünlü."
-        data-lat="39.5739"
-        data-lng="26.8797"
-        data-image="https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1200">
-
-        📍 Güre
-
-    </div>
-
-    <!-- AKÇAY -->
-
-    <div class="location-item"
-        data-name="Akçay"
-        data-description="Uzun sahili ve yaz atmosferiyle Körfez’in popüler bölgelerinden biri."
-        data-lat="39.5867"
-        data-lng="26.9290"
-        data-image="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1200">
-
-        📍 Akçay
-
-    </div>
-
-    <!-- ZEYTİNLİ -->
-
-    <div class="location-item"
-        data-name="Zeytinli"
-        data-description="Festivalleri ve doğal yaşamıyla dikkat çeken keyifli bir bölge."
-        data-lat="39.6036"
-        data-lng="27.0106"
-        data-image="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=1200">
-
-        📍 Zeytinli
-
-    </div>
-
-    <!-- EDREMİT -->
-
-    <div class="location-item"
-        data-name="Edremit"
-        data-description="Kaz Dağları’nın eteklerinde yer alan tarihi ve doğal güzelliklerle dolu şehir."
-        data-lat="39.5961"
-        data-lng="27.0244"
-        data-image="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200">
-
-        📍 Edremit
-
-    </div>
-
-    <!-- BURHANİYE -->
-
-    <div class="location-item"
-        data-name="Burhaniye"
-        data-description="Sahil yaşamı, plajları ve zeytinlikleriyle meşhur."
-        data-lat="39.5004"
-        data-lng="26.9727"
-        data-image="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200">
-
-        📍 Burhaniye
-
-    </div>
-
-    <!-- GÖMEÇ -->
-
-    <div class="location-item"
-        data-name="Gömeç"
-        data-description="Sessizliği ve doğal koylarıyla huzurlu bir Ege kasabası."
-        data-lat="39.3906"
-        data-lng="26.8395"
-        data-image="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=1200">
-
-        📍 Gömeç
-
-    </div>
-
-    <!-- AYVALIK -->
-
-    <div class="location-item"
-        data-name="Ayvalık"
-        data-description="Taş evleri, gün batımı ve eşsiz Ege atmosferi ile ünlü."
-        data-lat="39.3181"
-        data-lng="26.6935"
-        data-image="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200">
-
-        📍 Ayvalık
-
-    </div>
-
-    <!-- CUNDA -->
-
-    <div class="location-item"
-        data-name="Cunda Adası"
-        data-description="Dar taş sokakları ve deniz ürünleriyle meşhur romantik ada."
-        data-lat="39.3274"
-        data-lng="26.6594"
-        data-image="https://images.unsplash.com/photo-1493558103817-58b2924bce98?q=80&w=1200">
-
-        📍 Cunda Adası
-
-    </div>
-<div class="favorites-sidebar">
-
-    <button id="openFavorites" class="favorites-sidebar-btn">
-
-        ❤️ Favorilerim
-
-    </button>
-
-    <div class="favorites-panel hidden" id="favoritesPanel">
-
-        <ul id="favoritesList">
-
-        </ul>
-
-    </div>
-
-</div>
-</div>
-
+            <div class="sunset-box">
+                🌅 Gün Batımı: 20:14
             </div>
 
         </div>
 
-    </div>
+        <h2 id="cardTitle"></h2>
 
-    <!-- SEARCH -->
-
-    <div class="search-box">
-
-        <i class="fa-solid fa-magnifying-glass"></i>
-
-        <input type="text" placeholder="Bir yer ara...">
-
-    </div>
-    <button id="themeToggle" class="theme-toggle">
-    🌙 Gece Modu
-    </button>
-
-    <!-- MAP -->
-
- <div id="map" class="light-map"></div>
-    <!-- INFO CARD -->
-
-    <div class="info-card hidden" id="infoCard">
-        <div class="weather-box">
-            <div class="sunset-box">
-    🌅 Gün Batımı: 20:14
-    </div>
-
-    <h3>☀️ Hava Durumu</h3>
-
-    <p id="weatherText">
-        27°C • Hafif Rüzgar
-    </p>
-
-    </div>/div>
-
-        <button class="close-btn" id="closeCard">
-            ✕
+        <button id="favoriteBtn" class="favorite-btn">
+            ❤️ Favorilere Ekle
         </button>
 
-        <img id="cardImage"
-            src=""
-            alt="">
+        <p id="cardText"></p>
 
-        <div class="card-content">
-           <div class="favorites-box">
+        <div class="detail-tabs">
 
-    <h3>❤️ Favorilerim</h3>
-
-    <ul id="favoritesList">
-
-    </ul>
-
-    </div>
-
-            <h2 id="cardTitle"></h2>
-            <button id="favoriteBtn" class="favorite-btn">
-
-             ❤️ Favorilere Ekle
-
+            <button class="tab-btn active" data-tab="konaklama">
+                🏨 Konaklama
             </button>
 
-            <p id="cardText"></p>
+            <button class="tab-btn" data-tab="yemek">
+                🍴 Yemek
+            </button>
 
-            <!-- TABS -->
+            <button class="tab-btn" data-tab="plaj">
+                🌊 Plajlar
+            </button>
 
-            <div class="detail-tabs">
-
-                <button class="tab-btn active" data-tab="konaklama">
-                    🏨 Konaklama
-                </button>
-
-                <button class="tab-btn" data-tab="yemek">
-                    🍴 Yemek
-                </button>
-
-                <button class="tab-btn" data-tab="plaj">
-                    🌊 Plajlar
-                </button>
-
-                <button class="tab-btn" data-tab="aktivite">
-                    🎣 Aktivite
-                </button>
-
-            </div>
-
-            <!-- TAB CONTENT -->
-
-            <div class="tab-content" id="tabContent">
-
-                <ul>
-
-                    <li>🏨 Palm Beach Hotel</li>
-                    <li>🏨 Glenn Hotel & Beach</li>
-                    <li>🏨 Gürel Garden House</li>
-                    <li>🏨 Sarissa Butik Otel</li>
-                    <li>🏨 Orion Adatepe Hotel</li>
-
-                </ul>
-
-            </div>
+            <button class="tab-btn" data-tab="aktivite">
+                🎣 Aktivite
+            </button>
 
         </div>
 
-    </div>
-
-    <!-- BOTTOM MENU -->
-
-    <div class="bottom-menu">
-
-        <div>🍃 Doğa</div>
-        <div>🌊 Plaj</div>
-        <div>🏛 Tarihi Yer</div>
-        <div>🍴 Yemek</div>
-        <div>🎣 Aktivite</div>
-        <div>🏨 Konaklama</div>
+        <div class="tab-content" id="tabContent"></div>
 
     </div>
 
-    <!-- LEAFLET -->
+</div>
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- MÜZİK -->
 
-    <!-- JS -->
-
-    <script src="script.js"></script>
-
-</body>
 <audio id="bgMusic" loop>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
@@ -399,4 +272,97 @@
 <button id="musicBtn" class="music-btn">
     🎵 Müzik
 </button>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="script.js?v=10"></script>
+
+</body>
 </html>
+```
+
+---
+
+# script.js DÜZELTİLMESİ
+
+Aşağıdaki hatalı kısımları sil:
+
+* sağ taraftaki eski favoriler kutusu
+* duplicate favoriteBtn kodları
+* duplicate hidden class kullanımları
+* şu bozuk satır:
+
+```js
+const value = searchInput.value.toLowerCase();
+s
+```
+
+Buradaki tek başına duran `s` harfini sil.
+
+---
+
+# FAVORİLER SİSTEMİ
+
+Bu kodu kullan:
+
+```js
+function renderFavorites(){
+
+    const favorites =
+    JSON.parse(localStorage.getItem("favorites")) || [];
+
+    favoritesList.innerHTML = "";
+
+    favorites.forEach(fav => {
+
+        favoritesList.innerHTML += `
+            <li>❤️ ${fav}</li>
+        `;
+
+    });
+
+}
+
+favoriteBtn.addEventListener("click", () => {
+
+    let favorites =
+    JSON.parse(localStorage.getItem("favorites")) || [];
+
+    if(!favorites.includes(currentRegion)){
+
+        favorites.push(currentRegion);
+
+        localStorage.setItem(
+            "favorites",
+            JSON.stringify(favorites)
+        );
+
+        renderFavorites();
+
+        favoriteBtn.innerText =
+        "❤️ Favorilere Eklendi";
+    }
+
+});
+
+openFavorites.addEventListener("click", () => {
+
+    favoritesPanel.classList.toggle("hidden");
+
+});
+
+renderFavorites();
+```
+
+---
+
+# LOGIN / REGISTER
+
+Render üzerinde çalışması için:
+
+```js
+http://localhost:3000
+```
+
+olan yerleri sonra gerçek Render backend linkinle değiştireceğiz.
+
+Şimdilik localhost kalsın.
