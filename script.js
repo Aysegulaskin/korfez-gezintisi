@@ -474,7 +474,13 @@ userDiv.className = "user-box";
 
 userDiv.innerHTML = `
 
-    👤 ${data.username}
+    👤 ${safeUsername}
+
+    <button id="logoutBtn">
+        Çıkış Yap
+    </button>
+
+`;
 
     <button id="logoutBtn">
         Çıkış Yap
