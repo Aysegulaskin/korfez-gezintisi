@@ -471,7 +471,6 @@ function setLoggedIn(username){
         const userDiv = document.createElement("div");
 
 userDiv.className = "user-box";
-
 userDiv.innerHTML = `
 
     👤 ${safeUsername}
@@ -482,13 +481,11 @@ userDiv.innerHTML = `
 
 `;
 
-    <button id="logoutBtn">
-        Çıkış Yap
-    </button>
-
-`;
-
 document.body.appendChild(userDiv);
+
+    }
+
+}
 
 }
 
