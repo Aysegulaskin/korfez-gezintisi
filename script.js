@@ -916,12 +916,6 @@ console.log("SCRIPT ÇALIŞTI 😄");
             "👤 " + username;
 
             document.body.appendChild(userDiv);
-
-        }
-
-    }
-
-});
 document.addEventListener("click", (e) => {
 
     if(e.target.id === "logoutBtn"){
@@ -935,5 +929,8 @@ document.addEventListener("click", (e) => {
         location.reload();
 
     }
+        }
 
 });
+
+}
