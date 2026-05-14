@@ -487,8 +487,6 @@ document.body.appendChild(userDiv);
 
 }
 
-}
-
 if(loginOpenBtn){
 
     loginOpenBtn.addEventListener("click", () => {
