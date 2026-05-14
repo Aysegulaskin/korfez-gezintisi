@@ -881,41 +881,53 @@ document.addEventListener("click", (e) => {
 console.log("SCRIPT ÇALIŞTI 😄");
 
 // Modal kapatma için overlay click
+const isLoggedIn =
+localStorage.getItem("isLoggedIn");
 
-    const isLoggedIn =
-    localStorage.getItem("isLoggedIn");
+const username =
+normalizeUsername(localStorage.getItem("username"));
 
-    const username =
-    normalizeUsername(localStorage.getItem("username"));
+if(!username){
 
-    if(!username){
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("username");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username");
+
+}
+
+if(isLoggedIn === "true" && username){
+
+    if(loginOpenBtn){
+        loginOpenBtn.style.display = "none";
     }
-    if(isLoggedIn === "true" && username){
 
-        if(loginOpenBtn){
-            loginOpenBtn.style.display = "none";
-        }
+    if(registerOpenBtn){
+        registerOpenBtn.style.display = "none";
+    }
 
-        if(registerOpenBtn){
-            registerOpenBtn.style.display = "none";
-        }
+    let oldUser =
+    document.querySelector(".user-box");
 
-        const oldUser =
-        document.querySelector(".user-box");
+    if(!oldUser){
 
-        if(!oldUser){
+        const userDiv =
+        document.createElement("div");
 
-            const userDiv =
-            document.createElement("div");
+        userDiv.className = "user-box";
 
-            userDiv.className = "user-box";
+        userDiv.innerHTML = `
+            👤 ${username}
 
-            userDiv.innerText =
-            "👤 " + username;
+            <button id="logoutBtn">
+                Çıkış Yap
+            </button>
+        `;
 
-            document.body.appendChild(userDiv);
+        document.body.appendChild(userDiv);
+
+    }
+
+}
+
 document.addEventListener("click", (e) => {
 
     if(e.target.id === "logoutBtn"){
