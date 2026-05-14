@@ -18,6 +18,18 @@
 </head>
 <body>
 
+<button id="openFavorites">
+    ❤️ Favorilerim
+</button>
+
+<div id="favoritesPanel" class="hidden">
+
+    <h2>Favorilerim</h2>
+
+    <ul id="favoritesList"></ul>
+
+</div>
+
 <!-- AUTH -->
 
 <div class="auth-buttons">
@@ -72,6 +84,11 @@
             placeholder="Kullanıcı Adı">
 
         <input
+            type="email"
+            id="registerEmail"
+            placeholder="E-posta">
+
+        <input
             type="password"
             id="registerPassword"
             placeholder="Şifre">
@@ -114,7 +131,7 @@
             data-description="Kaz Dağları eteklerinde huzurlu bir sahil kasabası."
             data-lat="39.5476"
             data-lng="26.6238"
-            data-image="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200">
+            data-image="images/kucukkuyu-sahili3.jpg">
             📍 Küçükkuyu
         </div>
 
@@ -165,23 +182,7 @@
 
     </div>
 
-    <!-- FAVORİLER -->
-
-    <div class="favorites-sidebar">
-
-        <button id="openFavorites" class="favorites-sidebar-btn">
-            ❤️ Favorilerim
-        </button>
-
-        <div class="favorites-panel hidden" id="favoritesPanel">
-
-            <ul id="favoritesList"></ul>
-
-        </div>
-
     </div>
-
-</div>
 
 <!-- SEARCH -->
 
@@ -202,11 +203,150 @@
 <!-- MAP -->
 
 <div id="map" class="light-map"></div>
+<!-- KÜÇÜKKUYU GEZİ REHBERİ -->
+
+<section id="kucukkuyuSection" class="travel-section hidden">
+
+    <h1 class="travel-title">
+        🌅 Küçükkuyu'da Gezilecek Yerler
+    </h1>
+
+    <div class="travel-grid">
+
+        <!-- ZEUS ALTARI -->
+
+        <div class="travel-card">
+
+            <img
+                src="images/zeus-altari.jpg"
+                alt="Zeus Altarı">
+
+            <div class="travel-content">
+
+                <h2>Zeus Altarı</h2>
+
+                <p>
+                    Edremit Körfezi manzarasına sahip
+                    efsanevi bir nokta.
+                    Gün batımında eşsiz görüntüler sunar.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- ADATEPE -->
+
+        <div class="travel-card">
+
+            <img
+                src="images/adatepe-koyu.jpg"
+                alt="Adatepe Köyü">
+
+            <div class="travel-content">
+
+                <h2>Adatepe Köyü</h2>
+
+                <p>
+                    Taş evleri ve huzurlu sokaklarıyla
+                    bölgenin en güzel köylerinden biri.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- MIHLI -->
+
+        <div class="travel-card">
+
+            <img
+                src="images/mihli-selalesi.jpg"
+                alt="Mıhlı Şelalesi">
+
+            <div class="travel-content">
+
+                <h2>Mıhlı Şelalesi</h2>
+
+                <p>
+                    Kaz Dağları'nın serin doğasında
+                    bulunan büyüleyici bir şelale.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- ASSOS -->
+
+        <div class="travel-card">
+
+            <img
+                src="images/assos.jpg"
+                alt="Assos">
+
+            <div class="travel-content">
+
+                <h2>Assos</h2>
+
+                <p>
+                    Antik limanı, taş sokakları ve
+                    Athena Tapınağı ile ünlü tarihi bölge.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- KADIRGA -->
+
+        <div class="travel-card">
+
+            <img
+                src="images/kadirga-koyu.jpg"
+                alt="Kadırga Koyu">
+
+            <div class="travel-content">
+
+                <h2>Kadırga Koyu</h2>
+
+                <p>
+                    Turkuaz denizi ve sakin atmosferiyle
+                    bölgenin en sevilen koylarından biri.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- KAZ DAĞLARI -->
+
+        <div class="travel-card">
+
+            <img
+                src="images/kaz-daglari.jpg"
+                alt="Kaz Dağları">
+
+            <div class="travel-content">
+
+                <h2>Kaz Dağları</h2>
+
+                <p>
+                    Temiz havası ve yemyeşil doğasıyla
+                    doğa severlerin vazgeçilmez noktası.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 <!-- CARD -->
 
 <div class="info-card hidden" id="infoCard">
-
     <button class="close-btn" id="closeCard">
         ✕
     </button>
@@ -262,19 +402,8 @@
     </div>
 
 </div>
-
-<!-- MÜZİK -->
-
-<audio id="bgMusic" loop>
-    <source src="music.mp3" type="audio/mpeg">
-</audio>
-
-<button id="musicBtn" class="music-btn">
-    🎵 Müzik
-</button>
-
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="script.js?v=502"></script>
+<script src="script.js?v=506"></script>
 </body>
 </html>
 ```

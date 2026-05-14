@@ -34,7 +34,17 @@ const regionData = {
         ],
         aktivite:[
             "🥾 Kaz Dağları Yürüyüşü",
-            "🚤 Tekne Turu"
+            "🚤 Tekne Turu",
+            "🏛️ Zeus Altarı (Adatepe)",
+            "🏘️ Adatepe Köyü",
+            "🏘️ Yeşilyurt Köyü",
+            "🌊 Mıhlı Şelalesi (Başdeğirmen)",
+            "🏛️ Adatepe Zeytinyağı Müzesi",
+            "🏛️ Assos (Behramkale)",
+            "🌊 Kadırga Koyu",
+            "🏔️ Şahindere Kanyonu",
+            "⚓ Küçükkuyu Limanı ve Mübadele Anıtı",
+            "♨️ Afrodit Kaplıcaları"
         ]
     },
 
@@ -154,6 +164,17 @@ locations.forEach(location => {
         renderTab("konaklama");
         favoriteBtn.innerText =
 "❤️ Favorilere Ekle";
+
+        const kucukkuyuSection =
+        document.getElementById("kucukkuyuSection");
+
+        if(kucukkuyuSection){
+            if(name === "Küçükkuyu"){
+                kucukkuyuSection.classList.remove("hidden");
+            } else {
+                kucukkuyuSection.classList.add("hidden");
+            }
+        }
 
     });
 
@@ -279,36 +300,6 @@ if(openFavorites){
 
 renderFavorites();
 
-const bgMusic = document.getElementById("bgMusic");
-const musicBtn = document.getElementById("musicBtn");
-
-let musicPlaying = false;
-
-if(musicBtn && bgMusic){
-
-    musicBtn.addEventListener("click", () => {
-
-        if(!musicPlaying){
-
-            bgMusic.play();
-
-            musicBtn.innerText =
-            "⏸ Müziği Durdur";
-
-        }else{
-
-            bgMusic.pause();
-
-            musicBtn.innerText =
-            "🎵 Müzik";
-        }
-
-        musicPlaying = !musicPlaying;
-
-    });
-
-}
-
 const searchInput = document.getElementById("searchInput");
 
 if(searchInput){
@@ -350,6 +341,150 @@ document.getElementById("loginBtn");
 
 const registerBtn =
 document.getElementById("registerBtn");
+
+const authLoginCard =
+document.getElementById("authLoginCard");
+
+const authRegisterCard =
+document.getElementById("authRegisterCard");
+
+const apiUrl = "http://localhost:3000";
+
+async function handleRegister(username, email, password){
+    if(!username || !email || !password){
+        alert("Lütfen tüm alanları doldurun.");
+        return;
+    }
+
+    try{
+        const response = await fetch(
+            `${apiUrl}/register`,
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    username,
+                    email,
+                    password
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if(!response.ok){
+            alert(data.error || "Kayıt başarısız 😢");
+            return;
+        }
+
+        localStorage.setItem(
+            "token",
+            data.token
+        );
+
+        setLoggedIn(data.username || username);
+        if(registerModal){
+            registerModal.classList.add("hidden");
+        }
+
+        alert("Kayıt başarılı 😄");
+
+    }catch(err){
+        console.log(err);
+        alert("Kayıt başarısız 😢\n" + (err.message || "Sunucuya bağlanılamıyor."));
+    }
+}
+
+async function handleLogin(username, password){
+    if(!username || !password){
+        alert("Lütfen kullanıcı adı ve şifre girin.");
+        return;
+    }
+
+    try{
+        const response = await fetch(
+            `${apiUrl}/login`,
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    username,
+                    password
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if(!response.ok){
+            alert(data.error || "Giriş başarısız 😢");
+            return;
+        }
+
+        localStorage.setItem(
+            "token",
+            data.token
+        );
+
+        const usernameToUse = data.username || username;
+        setLoggedIn(usernameToUse);
+        if(loginModal){
+            loginModal.classList.add("hidden");
+        }
+
+        alert("Giriş başarılı 😄");
+
+    }catch(err){
+        console.log(err);
+        alert("Giriş başarısız 😢\n" + (err.message || "Sunucuya bağlanılamıyor."));
+    }
+}
+
+function normalizeUsername(username){
+    const normalized = typeof username === "string" ? username.trim() : "";
+    return normalized && normalized.toLowerCase() !== "undefined" ? normalized : "";
+}
+
+function setLoggedIn(username){
+    const safeUsername = normalizeUsername(username) || "Kullanıcı";
+
+    localStorage.setItem("isLoggedIn","true");
+    localStorage.setItem("username", safeUsername);
+
+    if(loginOpenBtn){
+        loginOpenBtn.style.display = "none";
+    }
+
+    if(registerOpenBtn){
+        registerOpenBtn.style.display = "none";
+    }
+
+    const oldUser =
+    document.querySelector(".user-box");
+
+    if(!oldUser){
+
+        const userDiv = document.createElement("div");
+
+userDiv.className = "user-box";
+
+userDiv.innerHTML = `
+
+    👤 ${data.username}
+
+    <button id="logoutBtn">
+        Çıkış Yap
+    </button>
+
+`;
+
+document.body.appendChild(userDiv);
+
+}
 
 if(loginOpenBtn){
 
@@ -406,46 +541,24 @@ if(registerBtn){
         const username =
         document.getElementById("registerUsername").value;
 
+        const email =
+        document.getElementById("registerEmail").value;
+
         const password =
         document.getElementById("registerPassword").value;
 
-        try{
+        await handleRegister(username, email, password);
 
-            const response = await fetch(
-                "https://korfez-backend.onrender.com/register",
-                {
-                    method:"POST",
-                    headers:{
-                        "Content-Type":"application/json"
-                    },
-                    body:JSON.stringify({
-                        username,
-                        password
-                    })
-                }
-            );
-const data = await response.json();
-console.log(response.status);
-console.log(data);
-if(!response.ok){
-
-    alert(data.error || "Giriş başarısız 😢");
-
-    return;
+    });
 
 }
 
-            console.log(data);
+if(authRegisterCard){
 
-            alert("Kayıt başarılı 😄");
-
-        }catch(err){
-
-            console.log(err);
-
-            alert("Kayıt başarısız 😢");
+    authRegisterCard.addEventListener("click", () => {
+        if(registerModal){
+            registerModal.classList.remove("hidden");
         }
-
     });
 
 }
@@ -460,67 +573,18 @@ if(loginBtn){
         const password =
         document.getElementById("loginPassword").value;
 
-        try{
-            const response = await fetch(
-                "https://korfez-backend.onrender.com/login",
-                {
-                    method:"POST",
-                    headers:{
-                        "Content-Type":"application/json"
-                    },
-                    body:JSON.stringify({
-                        username,
-                        password
-                    })
-                }
-            );
+        await handleLogin(username, password);
 
-            const data = await response.json();
-            if(!response.ok){
-
-    alert(data.error || "Kayıt başarısız 😢");
-
-    return;
+    });
 
 }
 
-            localStorage.setItem(
-                "token",
-                data.token
-            );
+if(authLoginCard){
 
-            localStorage.setItem(
-                "username",
-                data.username
-
-);
-            alert("Giriş başarılı 😄");
-            localStorage.setItem(
-    "isLoggedIn",
-    "true"
-);
-
-loginModal.classList.add("hidden");
-
-loginOpenBtn.style.display = "none";
-
-registerOpenBtn.style.display = "none";
-
-const userDiv = document.createElement("div");
-
-userDiv.className = "user-box";
-
-userDiv.innerText =
-"👤 " + data.username;
-
-document.body.appendChild(userDiv);
- }catch(err){
-
-            console.log(err);
-
-            alert("Giriş başarısız 😢");
+    authLoginCard.addEventListener("click", () => {
+        if(loginModal){
+            loginModal.classList.remove("hidden");
         }
-
     });
 
 }
@@ -532,9 +596,13 @@ window.addEventListener("load", () => {
     localStorage.getItem("isLoggedIn");
 
     const username =
-    localStorage.getItem("username");
+    normalizeUsername(localStorage.getItem("username"));
 
-    if(isLoggedIn === "true"){
+    if(!username){
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("username");
+    }
+    if(isLoggedIn === "true" && username){
 
         if(loginOpenBtn){
             loginOpenBtn.style.display = "none";
@@ -560,6 +628,21 @@ window.addEventListener("load", () => {
             document.body.appendChild(userDiv);
 
         }
+
+    }
+
+});
+document.addEventListener("click", (e) => {
+
+    if(e.target.id === "logoutBtn"){
+
+        localStorage.removeItem("token");
+
+        localStorage.removeItem("username");
+
+        localStorage.removeItem("isLoggedIn");
+
+        location.reload();
 
     }
 

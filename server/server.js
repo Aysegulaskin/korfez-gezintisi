@@ -31,11 +31,15 @@ const pool = new Pool({
 
 pool.query(`
 
-CREATE TABLE IF NOT EXISTS users (
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
 
     id SERIAL PRIMARY KEY,
 
     username VARCHAR(255) UNIQUE NOT NULL,
+
+    email VARCHAR(255) UNIQUE NOT NULL,
 
     password TEXT NOT NULL
 
@@ -64,7 +68,13 @@ app.post("/register", async (req,res) => {
 
     try{
 
-        const { username, password } = req.body;
+        console.log("Register request body:", req.body);
+
+        const { username, email, password } = req.body;
+
+        if(!username || !email || !password){
+            return res.status(400).json({ error: "Eksik kayıt verisi" });
+        }
 
         const hashedPassword =
         await bcrypt.hash(password,10);
@@ -72,26 +82,42 @@ app.post("/register", async (req,res) => {
         const result = await pool.query(
 
             `
-            INSERT INTO users(username,password)
+            INSERT INTO users(username,email,password)
 
-            VALUES($1,$2)
+            VALUES($1,$2,$3)
 
             RETURNING *
             `,
 
-            [username, hashedPassword]
+            [username, email, hashedPassword]
 
         );
 
-        res.json(result.rows[0]);
+        const token = jwt.sign(
+            {
+                id: result.rows[0].id
+            },
+            "korfez_secret"
+        );
+
+        res.json({
+            token,
+            username: result.rows[0].username
+        });
 
     }catch(err){
 
-        console.log(err);
+        console.error("Register error:", err);
+
+        if(err.code === "23505"){
+            return res.status(400).json({
+                error:"Kullanıcı adı veya e-posta zaten kayıtlı"
+            });
+        }
 
         res.status(500).json({
 
-            error:"Kayıt başarısız"
+            error: err.message || "Kayıt başarısız"
 
         });
 
