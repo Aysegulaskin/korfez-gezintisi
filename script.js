@@ -474,6 +474,11 @@ document.getElementById("loginModal");
 const registerModal =
 document.getElementById("registerModal");
 
+console.log("loginOpenBtn:", loginOpenBtn);
+console.log("registerOpenBtn:", registerOpenBtn);
+console.log("loginModal:", loginModal);
+console.log("registerModal:", registerModal);
+
 const loginBtn =
 document.getElementById("loginBtn");
 
@@ -697,6 +702,7 @@ function setLoggedIn(username){
 if(loginOpenBtn){
 
     loginOpenBtn.addEventListener("click", () => {
+        console.log("Login button clicked");
         if(loginModal){
             loginModal.classList.remove("hidden");
         }
@@ -707,6 +713,7 @@ if(loginOpenBtn){
 if(registerOpenBtn){
 
     registerOpenBtn.addEventListener("click", () => {
+        console.log("Register button clicked");
         if(registerModal){
             registerModal.classList.remove("hidden");
         }
@@ -763,6 +770,7 @@ if(forgotPasswordLink){
 
     forgotPasswordLink.addEventListener("click", (e) => {
         e.preventDefault();
+        console.log("Forgot password link clicked");
         if(loginModal){
             loginModal.classList.add("hidden");
         }
@@ -871,7 +879,8 @@ document.addEventListener("click", (e) => {
 });
 
 console.log("SCRIPT ÇALIŞTI 😄");
-window.addEventListener("load", () => {
+
+// Modal kapatma için overlay click
 
     const isLoggedIn =
     localStorage.getItem("isLoggedIn");
