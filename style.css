@@ -896,6 +896,45 @@ body{
 
     cursor:pointer;
 }
+
+.modal-close{
+    position:absolute;
+    right:18px;
+    top:18px;
+    width:32px;
+    height:32px;
+    border:none;
+    border-radius:50%;
+    background:rgba(0,0,0,0.15);
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.auth-box{
+    position:relative;
+}
+
+.forgot-link{
+
+    display:block;
+
+    margin-top:15px;
+
+    color:#127ca8;
+
+    text-decoration:none;
+
+    font-size:14px;
+
+    text-align:center;
+}
+
+.forgot-link:hover{
+
+    text-decoration:underline;
+
+}
 .user-box{
 
     position:absolute;

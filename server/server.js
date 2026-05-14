@@ -204,6 +204,63 @@ app.post("/login", async (req,res) => {
 
 });
 
+// ŞİFRE UNUTTUM
+
+app.post("/forgot-password", async (req,res) => {
+
+    try{
+
+        const { email } = req.body;
+
+        if(!email){
+            return res.status(400).json({ error: "E-posta gerekli" });
+        }
+
+        const result = await pool.query(
+
+            `
+            SELECT * FROM users
+
+            WHERE email=$1
+            `,
+
+            [email]
+
+        );
+
+        if(result.rows.length === 0){
+
+            return res.status(400).json({
+
+                error:"Bu e-posta ile kayıtlı kullanıcı bulunamadı"
+
+            });
+
+        }
+
+        // Gerçekte burada email gönderme kodu olmalı
+        // Şimdilik sadece başarı mesajı
+
+        res.json({
+
+            message: "Şifre sıfırlama bağlantısı gönderildi"
+
+        });
+
+    }catch(err){
+
+        console.log(err);
+
+        res.status(500).json({
+
+            error:"Şifre sıfırlama başarısız"
+
+        });
+
+    }
+
+});
+
 // SERVER
 
 app.listen(3000, () => {
