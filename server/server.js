@@ -1,3 +1,6 @@
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 const express = require("express");
 
 const cors = require("cors");
@@ -8,13 +11,34 @@ const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
 
-const multer = require("multer");
-
 const app = express();
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+
+        const uploadPath = path.join(__dirname, "../client/uploads");
+
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+        }
+
+        cb(null, uploadPath);
+    },
+
+    filename: function (req, file, cb) {
+
+        const uniqueName =
+            Date.now() + path.extname(file.originalname);
+
+        cb(null, uniqueName);
+    }
+});
+
+const upload = multer({ storage });
 
 app.use(cors());
 
 app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "../client/uploads")));
 
 // POSTGRESQL BAĞLANTISI
 
@@ -266,5 +290,21 @@ app.post("/forgot-password", async (req,res) => {
 app.listen(3000, () => {
 
     console.log("Server çalışıyor 😄");
+
+});
+app.post("/upload", upload.single("photo"), (req, res) => {
+
+    if (!req.file) {
+
+        return res.status(400).json({
+            error: "Dosya yüklenemedi"
+        });
+
+    }
+
+    res.json({
+        success: true,
+        image: "/uploads/" + req.file.filename
+    });
 
 });

@@ -232,10 +232,6 @@
 
 <!-- THEME -->
 
-<button id="themeToggle" class="theme-toggle">
-    ☀️ Gündüz Modu Aktif
-</button>
-
 <!-- MAP -->
 
 <div id="map" class="light-map"></div>
@@ -251,142 +247,8 @@
 
 <!-- CARD -->
 
-<div class="info-card hidden" id="infoCard">
-    <button class="close-btn" id="closeCard">
-        ✕
-    </button>
-
-    <img id="cardImage" src="" alt="">
-
-    <div class="card-content">
-
-        <div class="weather-box">
-
-            <h3>☀️ Hava Durumu</h3>
-
-            <p id="weatherText">
-                27°C • Hafif Rüzgar
-            </p>
-
-            <div class="sunset-box">
-                🌅 Gün Batımı: 20:14
-            </div>
-
-        </div>
-
-        <h2 id="cardTitle"></h2>
-
-        <button id="favoriteBtn" class="favorite-btn">
-            ❤️ Favorilere Ekle
-        </button>
-
-        <p id="cardText"></p>
-
-        <div class="detail-tabs">
-
-            <button class="tab-btn active" data-tab="konaklama">
-                🏨 Konaklama
-            </button>
-
-            <button class="tab-btn" data-tab="yemek">
-                🍴 Yemek
-            </button>
-
-            <button class="tab-btn" data-tab="plaj">
-                🌊 Plajlar
-            </button>
-
-            <button class="tab-btn" data-tab="aktivite">
-                🎣 Aktivite
-            </button>
-
-        </div>
-
-        <div class="tab-content" id="tabContent"></div>
-
-    </div>
-
 </div>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="script.js?v=901"></script>
 </body>
 </html>
-```
-
----
-
-```js
-const value = searchInput.value.toLowerCase();
-s
-```
-
-Buradaki tek başına duran `s` harfini sil.
-
----
-
-# FAVORİLER SİSTEMİ
-
-Bu kodu kullan:
-
-```js
-function renderFavorites(){
-
-    const favorites =
-    JSON.parse(localStorage.getItem("favorites")) || [];
-
-    favoritesList.innerHTML = "";
-
-    favorites.forEach(fav => {
-
-        favoritesList.innerHTML += `
-            <li>❤️ ${fav}</li>
-        `;
-
-    });
-
-}
-
-favoriteBtn.addEventListener("click", () => {
-
-    let favorites =
-    JSON.parse(localStorage.getItem("favorites")) || [];
-
-    if(!favorites.includes(currentRegion)){
-
-        favorites.push(currentRegion);
-
-        localStorage.setItem(
-            "favorites",
-            JSON.stringify(favorites)
-        );
-
-        renderFavorites();
-
-        favoriteBtn.innerText =
-        "❤️ Favorilere Eklendi";
-    }
-
-});
-
-openFavorites.addEventListener("click", () => {
-
-    favoritesPanel.classList.toggle("hidden");
-
-});
-
-renderFavorites();
-```
-
----
-
-# LOGIN / REGISTER
-
-Render üzerinde çalışması için:
-
-```js
-http://localhost:3000
-```
-
-olan yerleri sonra gerçek Render backend linkinle değiştireceğiz.
-
-Şimdilik localhost kalsın.

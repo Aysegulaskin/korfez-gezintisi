@@ -1,0 +1,86 @@
+body{
+
+    margin:0;
+
+    background:#0b1220;
+
+    color:white;
+
+    font-family:Arial;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    height:100vh;
+
+}
+
+.panel{
+
+    width:500px;
+
+    background:#111827;
+
+    padding:30px;
+
+    border-radius:20px;
+
+}
+
+input,
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    margin-top:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+}
+
+button{
+
+    background:#0ea5e9;
+
+    color:white;
+
+    cursor:pointer;
+
+}
+
+#dropZone{
+
+    border:2px dashed #0ea5e9;
+
+    padding:50px;
+
+    text-align:center;
+
+    margin-top:20px;
+
+    border-radius:20px;
+
+}
+
+.hidden{
+
+    display:none;
+
+}
+
+#preview{
+
+    width:100%;
+
+    margin-top:20px;
+
+    border-radius:15px;
+
+}
