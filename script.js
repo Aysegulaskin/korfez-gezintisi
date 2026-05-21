@@ -328,68 +328,6 @@ locations.forEach(location => {
 
 });
 
-    const favoriteBtn = document.getElementById("favoriteBtn");
-    const favoritesList = document.getElementById("favoritesList");
-    const openFavorites = document.getElementById("openFavorites");
-    const favoritesPanel = document.getElementById("favoritesPanel");
-
-    function renderFavorites() {
-
-        const favorites =
-            JSON.parse(localStorage.getItem("favorites")) || [];
-
-        favoritesList.innerHTML = "";
-
-        favorites.forEach(fav => {
-            favoritesList.innerHTML += `
-            <li>❤️ ${fav}</li>
-        `;
-
-        });
-
-    }
-
-    if (favoriteBtn) {
-
-        favoriteBtn.addEventListener("click", () => {
-
-            let favorites =
-                JSON.parse(localStorage.getItem("favorites")) || [];
-
-            if (!favorites.includes(currentRegion)) {
-
-                favorites.push(currentRegion);
-
-                localStorage.setItem(
-                    "favorites",
-                    JSON.stringify(favorites)
-                );
-
-                renderFavorites();
-
-                favoriteBtn.innerText =
-                    "❤️ Favorilere Eklendi";
-            }
-
-        });
-
-    }
-
-    if (openFavorites) {
-
-        openFavorites.addEventListener("click", () => {
-
-            if (favoritesPanel) {
-
-                favoritesPanel.classList.toggle("hidden");
-
-            }
-
-        });
-
-    }
-
-    renderFavorites();
 
     const searchInput = document.getElementById("searchInput");
 

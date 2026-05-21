@@ -1079,13 +1079,6 @@ body{
 }
 
 
-#placesContainer{
-    display:flex;
-    flex-wrap:wrap;
-    gap:20px;
-    padding:20px;
-    justify-content:center;
-}
 
 .place-card{
     width:320px;
