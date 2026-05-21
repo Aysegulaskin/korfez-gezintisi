@@ -26,7 +26,6 @@ const placeDescription =
 document.getElementById("placeDescription");
 
 let selectedFile = null;
-
 const apiUrl =
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1"
