@@ -22,7 +22,7 @@ body{
 
     width:100%;
 
-    height:75vh;
+    height: 70vh;
 
     background:#e9ecef;
 
@@ -1076,4 +1076,37 @@ body{
 
     color:white;
 
+}
+
+
+}#placesContainer{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    padding:20px;
+    justify-content:center;
+}
+
+.place-card{
+    width:320px;
+    background:#111827;
+    border-radius:20px;
+    overflow:hidden;
+    color:white;
+}
+
+.place-image{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    display:block;
+}
+
+.place-content{
+    padding:15px;
+}
+#placesContainer{
+    margin-top:-40px;
+    position:relative;
+    z-index:999;
 }

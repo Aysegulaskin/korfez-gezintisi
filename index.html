@@ -1,4 +1,3 @@
-# DÜZELTİLMİŞ index.html
 
 ```html
 <!DOCTYPE html>
@@ -162,61 +161,31 @@
 
     <div class="location-list">
 
-        <div class="location-item"
-            data-name="Küçükkuyu"
-            data-description="Kaz Dağları eteklerinde huzurlu bir sahil kasabası."
-            data-lat="39.5476"
-            data-lng="26.6238"
-            data-image="/images/kucukkuyu-sahili3.jpg">
-            📍 Küçükkuyu
-        </div>
+    <button data-region="kucukkuyu" data-name="Küçükkuyu">
+        📍 Küçükkuyu
+    </button>
 
-        <div class="location-item"
-            data-name="Altınoluk"
-            data-description="Temiz havası ve sahiliyle ünlü tatil beldesi."
-            data-lat="39.5798"
-            data-lng="26.7377"
-            data-image="/images/altinoluk-sahili.jpg">
-            📍 Altınoluk
-        </div>
+    <button data-region="altinoluk" data-name="Altınoluk">
+        📍 Altınoluk
+    </button>
 
-        <div class="location-item"
-            data-name="Güre"
-            data-description="Termal otelleri ve doğasıyla ünlü bölge."
-            data-lat="39.5739"
-            data-lng="26.8797"
-            data-image="/images/hasan-boguldu.jpg">
-            📍 Güre
-        </div>
+    <button data-region="gure" data-name="Güre">
+        📍 Güre
+    </button>
 
-        <div class="location-item"
-            data-name="Akçay"
-            data-description="Sahili ve yaz atmosferiyle popüler bir bölge."
-            data-lat="39.5867"
-            data-lng="26.9290"
-            data-image="/images/kucukkuyu-sahili2.jpg">
-            📍 Akçay
-        </div>
+    <button data-region="akcay" data-name="Akçay">
+        📍 Akçay
+    </button>
 
-        <div class="location-item"
-            data-name="Ayvalık"
-            data-description="Taş evleri ve gün batımıyla ünlü Ege kasabası."
-            data-lat="39.3181"
-            data-lng="26.6935"
-            data-image="/images/assos2.jpg">
-            📍 Ayvalık
-        </div>
+    <button data-region="ayvalik" data-name="Ayvalık">
+        📍 Ayvalık
+    </button>
 
-        <div class="location-item"
-            data-name="Cunda Adası"
-            data-description="Dar sokakları ve deniz ürünleriyle ünlü ada."
-            data-lat="39.3274"
-            data-lng="26.6594"
-            data-image="/images/assos3.jpg">
-            📍 Cunda Adası
-        </div>
+    <button data-region="cunda" data-name="Cunda Adası">
+        📍 Cunda Adası
+    </button>
 
-    </div>
+</div>
 
     </div>
 
@@ -246,8 +215,7 @@
 </section>
 
 <!-- CARD -->
-
-</div>
+<section id="placesContainer"></section>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="script.js?v=901"></script>
 </body>

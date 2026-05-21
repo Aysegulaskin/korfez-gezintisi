@@ -205,7 +205,17 @@ const travelCards = {
     ]
 };
 
-const locations = document.querySelectorAll(".location-item");
+const regionMap = {
+    kucukkuyu: "Küçükkuyu",
+    altinoluk: "Altınoluk",
+    gure: "Güre",
+    akcay: "Akçay",
+    ayvalik: "Ayvalık",
+    cunda: "Cunda Adası"
+};
+
+const locations =
+document.querySelectorAll("[data-region]");
 
 const customIcon = L.icon({
 
@@ -217,20 +227,6 @@ const customIcon = L.icon({
     iconAnchor: [19, 38],
 
     popupAnchor: [0, -38]
-
-});
-
-locations.forEach(location => {
-
-    const lat = location.dataset.lat;
-    const lng = location.dataset.lng;
-    const name = location.dataset.name;
-
-    L.marker([lat, lng], {
-        icon: customIcon
-    })
-        .addTo(map)
-        .bindPopup(`<b>${name}</b>`);
 
 });
 
@@ -288,36 +284,23 @@ function renderTravelSection(region) {
 
     travelSection.classList.remove("hidden");
 }
-
 locations.forEach(location => {
 
     location.addEventListener("click", () => {
 
-        const lat = location.dataset.lat;
-        const lng = location.dataset.lng;
+        const regionKey = location.dataset.region;
+        const regionName = regionMap[regionKey] || regionKey;
+        currentRegion = regionName;
 
-        const name = location.dataset.name;
-        const image = location.dataset.image;
-        const description = location.dataset.description;
-
-        currentRegion = name;
-
-        map.flyTo([lat, lng], 12, {
-            duration: 1.8
-        });
-
-        cardTitle.innerText = name;
-        cardImage.src = image;
-        cardText.innerText = description;
-
-        renderTravelSection(name);
+        renderTravelSection(regionName);
         renderTab("konaklama");
-        infoCard.classList.remove("hidden");
+        loadPlaces(regionKey);
 
     });
 
 });
 
+// Seyahat kartları yalnızca bir bölge seçildiğinde gösterilecek
 if (closeCard) {
 
     closeCard.addEventListener("click", () => {
@@ -911,3 +894,53 @@ tabButtons.forEach(button => {
         }
     
     });
+
+async function loadPlaces(regionName) {
+
+    const container =
+    document.getElementById("placesContainer");
+
+    if(!container){
+        return;
+    }
+
+    container.innerHTML = "";
+
+    try {
+        const response = await fetch(`${apiUrl}/places`);
+        if (!response.ok) {
+            throw new Error(`Places fetch failed: ${response.status}`);
+        }
+
+        const places = await response.json();
+
+        const filteredPlaces = places.filter(place => {
+            return place.region.toLowerCase() === regionName.toLowerCase();
+        });
+
+        if (filteredPlaces.length === 0) {
+            container.innerHTML = `<p>Bu bölge için henüz yer bulunamadı.</p>`;
+            return;
+        }
+
+        filteredPlaces.forEach(place => {
+            container.innerHTML += `
+                <div class="place-card">
+                    <img
+                        src="${apiUrl}/uploads/${place.image}"
+                        class="place-image"
+                        alt="${place.title}"
+                    >
+                    <div class="place-content">
+                        <h2>${place.title}</h2>
+                        <p>${place.description}</p>
+                    </div>
+                </div>
+            `;
+        });
+    } catch (err) {
+        console.log("loadPlaces error:", err);
+        container.innerHTML = `<p>Yerler yüklenemedi. Lütfen daha sonra tekrar deneyin.</p>`;
+    }
+}
+    
