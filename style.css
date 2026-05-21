@@ -1105,8 +1105,3 @@ body{
 .place-content{
     padding:15px;
 }
-#placesContainer{
-    margin-top:-40px;
-    position:relative;
-    z-index:999;
-}

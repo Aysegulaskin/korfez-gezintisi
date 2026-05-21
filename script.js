@@ -446,7 +446,7 @@ tabButtons.forEach(button => {
         ? "http://localhost:3000"
         : (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
             ? "http://localhost:3000"
-            : window.location.origin;
+            : "http://localhost:3000";
 
     function getLocalAuthUsers() {
         return JSON.parse(localStorage.getItem("authUsers") || "[]");
@@ -897,26 +897,33 @@ tabButtons.forEach(button => {
 
 async function loadPlaces(regionName) {
 
+    console.log("loadPlaces called with:", regionName);
+
     const container =
     document.getElementById("placesContainer");
 
     if(!container){
+        console.log("placesContainer not found!");
         return;
     }
 
     container.innerHTML = "";
 
     try {
+        console.log("Fetching from:", `${apiUrl}/places`);
         const response = await fetch(`${apiUrl}/places`);
         if (!response.ok) {
             throw new Error(`Places fetch failed: ${response.status}`);
         }
 
         const places = await response.json();
+        console.log("All places:", places);
 
         const filteredPlaces = places.filter(place => {
             return place.region.toLowerCase() === regionName.toLowerCase();
         });
+
+        console.log("Filtered places for", regionName, ":", filteredPlaces);
 
         if (filteredPlaces.length === 0) {
             container.innerHTML = `<p>Bu bölge için henüz yer bulunamadı.</p>`;
