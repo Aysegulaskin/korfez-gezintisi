@@ -27,6 +27,12 @@ document.getElementById("placeDescription");
 
 let selectedFile = null;
 
+const apiUrl = window.location.protocol === "file:"
+    ? "http://localhost:3000"
+    : (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+        ? "http://localhost:3000"
+        : window.location.origin;
+
 loginBtn.addEventListener("click", () => {
 
     if(passwordInput.value === "12345"){
@@ -81,22 +87,30 @@ uploadBtn.addEventListener("click", async () => {
         placeDescription.value
     );
 
-    const response =
-    console.log(formData);
-    await fetch("http://localhost:3000/upload", {
-
-        method:"POST",
-
-        body:formData
-
+    const response = await fetch(`${apiUrl}/upload`, {
+        method: "POST",
+        body: formData
     });
 
-    const data =
-    await response.json();
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Upload failed:", errorText);
+        alert("Yükleme başarısız oldu. Lütfen tekrar deneyin.");
+        return;
+    }
 
+    const data = await response.json();
     console.log(data);
 
     alert("Yer başarıyla eklendi 😄");
+
+    // Formu temizle ve tekrar yüklemeye hazır hale getir
+    selectedFile = null;
+    preview.src = "";
+    fileInput.value = "";
+    placeTitle.value = "";
+    placeDescription.value = "";
+    regionSelect.value = "kucukkuyu";
 
 });
 const dropZone =
