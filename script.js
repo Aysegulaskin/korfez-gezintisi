@@ -444,11 +444,11 @@ locations.forEach(location => {
     const authRegisterCard =
         document.getElementById("authRegisterCard");
 
-    const apiUrl = window.location.protocol === "file:"
-        ? "http://localhost:3000"
-        : (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-            ? "http://localhost:3000"
-            : "http://localhost:3000";
+    const apiUrl =
+         window.location.hostname === "localhost" ||
+         window.location.hostname === "127.0.0.1"
+           ? "http://localhost:3000"
+           : "https://korfez-backend.onrender.com";
 
     function getLocalAuthUsers() {
         return JSON.parse(localStorage.getItem("authUsers") || "[]");
