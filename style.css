@@ -1079,7 +1079,7 @@ body{
 }
 
 
-}#placesContainer{
+#placesContainer{
     display:flex;
     flex-wrap:wrap;
     gap:20px;
