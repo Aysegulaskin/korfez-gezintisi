@@ -81,10 +81,19 @@ uploadBtn.addEventListener("click", async () => {
         placeTitle.value
     );
 
-    formData.append(
-        "description",
-        placeDescription.value
-    );
+    const regionNames = {
+    kucukkuyu: "Küçükkuyu",
+    altinoluk: "Altınoluk",
+    gure: "Güre",
+    akcay: "Akçay",
+    ayvalik: "Ayvalık",
+    cunda: "Cunda Adası"
+};
+
+formData.append(
+    "region",
+    regionNames[regionSelect.value]
+);
 
     const response = await fetch(`${apiUrl}/upload`, {
         method: "POST",

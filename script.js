@@ -322,7 +322,7 @@ locations.forEach(location => {
         renderTravelSection(regionName);
         renderTab("konaklama");
         console.log("Calling loadPlaces with:", regionKey);
-        loadPlaces(regionKey);
+        loadPlaces(regionName);
 
     });
 
