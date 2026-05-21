@@ -27,11 +27,11 @@ document.getElementById("placeDescription");
 
 let selectedFile = null;
 
-const apiUrl = window.location.protocol === "file:"
-    ? "http://localhost:3000"
-    : (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+const apiUrl =
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
         ? "http://localhost:3000"
-        : window.location.origin;
+        : "https://korfez-backend.onrender.com";
 
 loginBtn.addEventListener("click", () => {
 
