@@ -284,22 +284,6 @@ function renderTravelSection(region) {
 
     travelSection.classList.remove("hidden");
 }
-locations.forEach(location => {
-
-    location.addEventListener("click", () => {
-
-        const regionKey = location.dataset.region;
-        const regionName = regionMap[regionKey] || regionKey;
-        currentRegion = regionName;
-
-        renderTravelSection(regionName);
-        renderTab("konaklama");
-        loadPlaces(regionKey);
-
-    });
-
-});
-
 // Seyahat kartları yalnızca bir bölge seçildiğinde gösterilecek
 if (closeCard) {
 
@@ -324,7 +308,25 @@ tabButtons.forEach(button => {
         renderTab(tab);
 
     });
+});
+
+// Button locations event listeners - BUTTON CLICKS
+locations.forEach(location => {
+
+    location.addEventListener("click", () => {
+
+        const regionKey = location.dataset.region;
+        const regionName = regionMap[regionKey] || regionKey;
+        currentRegion = regionName;
+
+        renderTravelSection(regionName);
+        renderTab("konaklama");
+        console.log("Calling loadPlaces with:", regionKey);
+        loadPlaces(regionKey);
+
     });
+
+});
 
     const favoriteBtn = document.getElementById("favoriteBtn");
     const favoritesList = document.getElementById("favoritesList");
