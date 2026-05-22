@@ -102,7 +102,11 @@ app.post(
 
             description:req.body.description,
 
-            image:req.file.filename
+            image:req.file.filename,
+
+            lat:req.body.lat,
+
+            lng:req.body.lng
 
         };
 
@@ -118,7 +122,8 @@ app.post(
         );
 
         res.json({
-            success:true
+            success:true,
+            place:newPlace
         });
 
     }
@@ -156,4 +161,5 @@ app.listen(3000, () => {
     console.log("SERVER AKTİF 😄");
 
 });
+
 setInterval(() => {}, 1000);

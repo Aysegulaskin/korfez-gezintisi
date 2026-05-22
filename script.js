@@ -315,13 +315,20 @@ locations.forEach(location => {
 
     location.addEventListener("click", () => {
 
+        console.log("BUTTON CLICKED");
+
         const regionKey = location.dataset.region;
+
+        console.log("regionKey:", regionKey);
+
         const regionName = regionMap[regionKey] || regionKey;
+
+        console.log("regionName:", regionName);
+
         currentRegion = regionName;
 
         renderTravelSection(regionName);
-        renderTab("konaklama");
-        console.log("Calling loadPlaces with:", regionKey);
+
         loadPlaces(regionName);
 
     });
@@ -331,27 +338,28 @@ locations.forEach(location => {
 
     const searchInput = document.getElementById("searchInput");
 
-    if (searchInput) {
-
-        searchInput.addEventListener("input", () => {
-            const value = searchInput.value.toLowerCase();
-
             locations.forEach(location => {
+                });
 
-                const name =
-                    location.dataset.name.toLowerCase();
+    location.addEventListener("click", () => {
 
-                if (name.includes(value)) {
-                    location.style.display = "block";
-                } else {
-                    location.style.display = "none";
-                }
+        console.log("BUTTON CLICKED");
 
-            });
+        const regionKey = location.dataset.region;
 
-        });
+        console.log("regionKey:", regionKey);
 
-    }
+        const regionName = regionMap[regionKey] || regionKey;
+
+        console.log("regionName:", regionName);
+
+        currentRegion = regionName;
+
+        renderTravelSection(regionName);
+
+        loadPlaces(regionName);
+
+    });
 
     const loginOpenBtn =
         document.getElementById("loginOpenBtn");
@@ -848,7 +856,15 @@ async function loadPlaces(regionName) {
     }
 
     container.innerHTML = "";
+map.eachLayer(layer => {
 
+    if(layer instanceof L.Marker){
+
+        map.removeLayer(layer);
+
+    }
+
+});
     try {
         console.log("Fetching from:", `${apiUrl}/places`);
         const response = await fetch(`${apiUrl}/places`);
@@ -869,8 +885,37 @@ async function loadPlaces(regionName) {
             container.innerHTML = `<p>Bu bölge için henüz yer bulunamadı.</p>`;
             return;
         }
+if(place.lat && place.lng){
 
+    L.marker([
+        parseFloat(place.lat),
+        parseFloat(place.lng)
+    ], {
+        icon: customIcon
+    })
+    .addTo(map)
+    .bindPopup(`
+        <b>${place.title}</b><br>
+        ${place.description}
+    `);
+
+}
         filteredPlaces.forEach(place => {
+            if(place.lat && place.lng){
+
+    L.marker([
+        parseFloat(place.lat),
+        parseFloat(place.lng)
+    ], {
+        icon: customIcon
+    })
+    .addTo(map)
+    .bindPopup(`
+        <b>${place.title}</b><br>
+        ${place.description}
+    `);
+
+}
             container.innerHTML += `
                 <div class="place-card">
                     <img
@@ -887,7 +932,6 @@ async function loadPlaces(regionName) {
         });
     } catch (err) {
         console.log("loadPlaces error:", err);
-        container.innerHTML = `<p>Yerler yüklenemedi. Lütfen daha sonra tekrar deneyin.</p>`;
+        container.innerHTML = `<p>Yerler yüklenemedi. Lütfen daha sonra tekrar deneyin.</p>`;  
     }
-}
-    
+    }

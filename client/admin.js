@@ -1,3 +1,9 @@
+const latitude =
+document.getElementById("latitude");
+
+const longitude =
+document.getElementById("longitude");
+
 const passwordInput =
 document.getElementById("password");
 
@@ -26,11 +32,23 @@ const placeDescription =
 document.getElementById("placeDescription");
 
 let selectedFile = null;
+
 const apiUrl =
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1"
         ? "http://localhost:3000"
         : "https://korfez-backend.onrender.com";
+
+const regionNames = {
+
+    kucukkuyu: "Küçükkuyu",
+    altinoluk: "Altınoluk",
+    gure: "Güre",
+    akcay: "Akçay",
+    ayvalik: "Ayvalık",
+    cunda: "Cunda Adası"
+
+};
 
 loginBtn.addEventListener("click", () => {
 
@@ -62,6 +80,7 @@ uploadBtn.addEventListener("click", async () => {
         alert("Dosya seç");
 
         return;
+
     }
 
     const formData = new FormData();
@@ -73,7 +92,7 @@ uploadBtn.addEventListener("click", async () => {
 
     formData.append(
         "region",
-        regionSelect.value
+        regionNames[regionSelect.value]
     );
 
     formData.append(
@@ -81,46 +100,65 @@ uploadBtn.addEventListener("click", async () => {
         placeTitle.value
     );
 
-    const regionNames = {
-    kucukkuyu: "Küçükkuyu",
-    altinoluk: "Altınoluk",
-    gure: "Güre",
-    akcay: "Akçay",
-    ayvalik: "Ayvalık",
-    cunda: "Cunda Adası"
-};
+    formData.append(
+        "description",
+        placeDescription.value
+    );
 
-formData.append(
-    "region",
-    regionNames[regionSelect.value]
-);
+    formData.append(
+        "lat",
+        latitude.value
+    );
+
+    formData.append(
+        "lng",
+        longitude.value
+    );
 
     const response = await fetch(`${apiUrl}/upload`, {
+
         method: "POST",
+
         body: formData
+
     });
 
     if (!response.ok) {
+
         const errorText = await response.text();
+
         console.error("Upload failed:", errorText);
+
         alert("Yükleme başarısız oldu. Lütfen tekrar deneyin.");
+
         return;
+
     }
 
     const data = await response.json();
+
     console.log(data);
 
     alert("Yer başarıyla eklendi 😄");
 
-    // Formu temizle ve tekrar yüklemeye hazır hale getir
     selectedFile = null;
+
     preview.src = "";
+
     fileInput.value = "";
+
     placeTitle.value = "";
+
     placeDescription.value = "";
+
+    latitude.value = "";
+
+    longitude.value = "";
+
     regionSelect.value = "kucukkuyu";
 
 });
+
 const dropZone =
 document.getElementById("dropZone");
 
