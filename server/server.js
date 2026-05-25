@@ -120,6 +120,11 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../index.html"));
 });
 
+// Admin paneli
+app.get("/admin", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/admin.html"));
+});
+
 // Tüm yerleri getir
 app.get("/places", async (req, res) => {
     try {

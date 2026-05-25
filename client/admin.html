@@ -1,94 +1,80 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Admin Panel</title>
-
-<link rel="stylesheet" href="admin.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yönetici Paneli</title>
+<link rel="stylesheet" href="/client/admin.css">
 </head>
-
 <body>
 
-<div class="panel">
+<div class="panel" id="loginPanel">
+    <h1>🔐 Yönetici Paneli</h1>
+    <input type="password" id="password" placeholder="Şifre">
+    <button id="loginBtn">Giriş Yap</button>
+</div>
 
-    <h1>Yönetici Paneli</h1>
+<div class="panel wide hidden" id="adminPanel">
 
-    <input
-        type="password"
-        id="password"
-        placeholder="Şifre">
+    <div class="admin-header">
+        <h1>🗺️ Yönetici Paneli</h1>
+        <button id="logoutBtn" class="btn-danger small">Çıkış</button>
+    </div>
 
-    <button id="loginBtn">
+    <!-- YER EKLE -->
+    <div class="section">
+        <h2>➕ Yeni Yer Ekle</h2>
 
-        Giriş Yap
+        <div class="form-grid">
+            <select id="regionSelect">
+                <option value="kucukkuyu">Küçükkuyu</option>
+                <option value="altinoluk">Altınoluk</option>
+                <option value="gure">Güre</option>
+                <option value="akcay">Akçay</option>
+                <option value="ayvalik">Ayvalık</option>
+                <option value="cunda">Cunda Adası</option>
+            </select>
 
-    </button>
-
-    <div id="uploadArea" class="hidden">
-
-        <h2>Fotoğraf Yükle</h2>
-
-        <select id="regionSelect">
-
-            <option value="kucukkuyu">Küçükkuyu</option>
-            <option value="altinoluk">Altınoluk</option>
-            <option value="gure">Güre</option>
-            <option value="akcay">Akçay</option>
-            <option value="ayvalik">Ayvalık</option>
-            <option value="cunda">Cunda Adası</option>
-
-        </select>
-
-        <input
-            type="text"
-            id="placeTitle"
-            placeholder="Yer Adı"
-        />
-
-        <textarea
-            id="placeDescription"
-            placeholder="Açıklama Yaz"
-        ></textarea>
-
-        <input
-            type="text"
-            id="latitude"
-            placeholder="Enlem (latitude)"
-        >
-
-        <input
-            type="text"
-            id="longitude"
-            placeholder="Boylam (longitude)"
-        >
-
-        <div id="dropZone">
-
-            Fotoğrafı Buraya Sürükle
-
+            <input type="text" id="placeTitle" placeholder="Yer Adı">
         </div>
 
-        <input type="file" id="fileInput">
+        <textarea id="placeDescription" placeholder="Açıklama"></textarea>
 
-        <button id="uploadBtn">
+        <div class="form-grid">
+            <input type="text" id="latitude"  placeholder="Enlem (örn: 39.5497)">
+            <input type="text" id="longitude" placeholder="Boylam (örn: 26.6219)">
+        </div>
 
-            Yükle
+        <div id="dropZone">
+            📷 Fotoğrafı buraya sürükle veya tıkla
+            <input type="file" id="fileInput" accept="image/*">
+        </div>
 
-        </button>
+        <img id="preview" class="hidden">
 
-        <img id="preview">
+        <button id="uploadBtn" class="btn-primary">✅ Yeri Ekle</button>
+        <div id="uploadMsg"></div>
+    </div>
 
+    <!-- YER LİSTESİ -->
+    <div class="section">
+        <div class="section-header">
+            <h2>📋 Mevcut Yerler</h2>
+            <select id="filterRegion">
+                <option value="">Tüm Bölgeler</option>
+                <option value="kucukkuyu">Küçükkuyu</option>
+                <option value="altinoluk">Altınoluk</option>
+                <option value="gure">Güre</option>
+                <option value="akcay">Akçay</option>
+                <option value="ayvalik">Ayvalık</option>
+                <option value="cunda">Cunda Adası</option>
+            </select>
+        </div>
+        <div id="placesList"></div>
     </div>
 
 </div>
 
-<script src="admin.js"></script>
-
+<script src="/client/admin.js"></script>
 </body>
 </html>
