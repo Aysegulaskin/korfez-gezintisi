@@ -3,6 +3,13 @@ const map = L.map('map', {
     attributionControl: false
 }).setView([39.50, 26.85], 10);
 
+// ─── API URL (en üstte tanımlanmalı) ────────────────────────────────────────
+const apiUrl =
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
+        ? "http://localhost:3000"
+        : window.location.origin;
+
 const bounds = [
     [39.20, 26.45],
     [39.75, 27.20]
@@ -421,11 +428,7 @@ if (searchInput) {
     const authRegisterCard =
         document.getElementById("authRegisterCard");
 
-    const apiUrl =
-         window.location.hostname === "localhost" ||
-         window.location.hostname === "127.0.0.1"
-           ? "http://localhost:3000"
-           : window.location.origin;
+    const apiUrl_unused = null; // yukarıda tanımlandı
 
     function getLocalAuthUsers() {
         return JSON.parse(localStorage.getItem("authUsers") || "[]");
