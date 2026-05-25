@@ -5,7 +5,7 @@ const apiUrl =
         : window.location.origin;
 
 // Şifre env'den gelmiyor, basit koruma — production'da değiştir
-const ADMIN_PASSWORD = "korfez2024";
+const ADMIN_PASSWORD = "korfez2620*";
 
 const regionLabels = {
     kucukkuyu: "Küçükkuyu",
