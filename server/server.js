@@ -65,6 +65,16 @@ app.post(
     upload.single("photo"),
     (req, res) => {
 
+        if (!req.file) {
+            return res.status(400).json({ error: "Fotoğraf gerekli" });
+        }
+
+        const { region, title, description, lat, lng } = req.body;
+
+        if (!region || !title || !description) {
+            return res.status(400).json({ error: "Bölge, başlık ve açıklama gerekli" });
+        }
+
         const placesPath =
         path.join(
             __dirname,
@@ -94,9 +104,20 @@ app.post(
             )
         );
 
+        const rawRegion = req.body.region || "";
+        const normalizedRegion = rawRegion
+            .toLowerCase()
+            .replace(/ı/g, "i")
+            .replace(/ü/g, "u")
+            .replace(/ş/g, "s")
+            .replace(/ğ/g, "g")
+            .replace(/ö/g, "o")
+            .replace(/ç/g, "c")
+            .replace(/\s+/g, "");
+
         const newPlace = {
 
-            region:req.body.region,
+            region: normalizedRegion,
 
             title:req.body.title,
 
@@ -106,7 +127,9 @@ app.post(
 
             lat:req.body.lat,
 
-            lng:req.body.lng
+            lng:req.body.lng,
+
+            static: false
 
         };
 

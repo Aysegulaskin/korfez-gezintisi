@@ -1,34 +1,182 @@
 [
   {
     "region": "kucukkuyu",
-    "title": "Aşıklar tepesi",
-    "description": "a",
-    "image": "1778823593233.jpg"
+    "title": "Zeus Altarı",
+    "description": "Edremit Körfezi manzarasına sahip efsanevi bir nokta. Gün batımında eşsiz görüntüler sunar.",
+    "image": "zeus-altari.jpg",
+    "lat": "39.5497",
+    "lng": "26.6219",
+    "static": true
+  },
+  {
+    "region": "kucukkuyu",
+    "title": "Adatepe Köyü",
+    "description": "Taş evleri ve huzurlu sokaklarıyla bölgenin en güzel köylerinden biri.",
+    "image": "adatepe-koyu.jpg",
+    "lat": "39.5512",
+    "lng": "26.6198",
+    "static": true
+  },
+  {
+    "region": "kucukkuyu",
+    "title": "Mıhlı Şelalesi",
+    "description": "Kaz Dağları'nın serin doğasında bulunan büyüleyici bir şelale.",
+    "image": "mihli-selalesi.jpg",
+    "lat": "39.6012",
+    "lng": "26.7234",
+    "static": true
+  },
+  {
+    "region": "kucukkuyu",
+    "title": "Assos (Behramkale)",
+    "description": "Antik limanı, taş sokakları ve Athena Tapınağı ile ünlü tarihi bölge.",
+    "image": "assos.jpg",
+    "lat": "39.4917",
+    "lng": "26.3378",
+    "static": true
+  },
+  {
+    "region": "kucukkuyu",
+    "title": "Kadırga Koyu",
+    "description": "Turkuaz denizi ve sakin atmosferiyle bölgenin en sevilen koylarından biri.",
+    "image": "kadirga-koyu.jpg",
+    "lat": "39.5089",
+    "lng": "26.4756",
+    "static": true
+  },
+  {
+    "region": "kucukkuyu",
+    "title": "Kaz Dağları",
+    "description": "Temiz havası ve yemyeşil doğasıyla doğa severlerin vazgeçilmez noktası.",
+    "image": "kaz-daglari.jpg",
+    "lat": "39.6833",
+    "lng": "26.8167",
+    "static": true
+  },
+  {
+    "region": "altinoluk",
+    "title": "Şahinderesi Kanyonu",
+    "description": "Kaz Dağları'nın en etkileyici doğal alanlarından biri.",
+    "image": "sahinderesi-kanyonu.jpg",
+    "lat": "39.5833",
+    "lng": "26.7167",
+    "static": true
+  },
+  {
+    "region": "altinoluk",
+    "title": "Antandros Antik Kenti",
+    "description": "Tarihi mozaikleri ve antik kalıntılarıyla öne çıkan bir kültür noktası.",
+    "image": "antandros-antik-kenti.jpg",
+    "lat": "39.5756",
+    "lng": "26.7489",
+    "static": true
+  },
+  {
+    "region": "altinoluk",
+    "title": "Altınoluk Sahili",
+    "description": "Gün batımı ve sahil yürüyüşleriyle ünlü Altınoluk'un en sevilen sahili.",
+    "image": "altinoluk-sahili.jpg",
+    "lat": "39.5667",
+    "lng": "26.7333",
+    "static": true
+  },
+  {
+    "region": "gure",
+    "title": "Hasan Boğuldu Kaynağı",
+    "description": "Güre'nin doğal güzelliği içinde etrafı çam ağaçlarıyla çevrili huzurlu bir kaynak.",
+    "image": "hasan-boguldu.jpg",
+    "lat": "39.5489",
+    "lng": "26.8012",
+    "static": true
+  },
+  {
+    "region": "gure",
+    "title": "Sütüven Şelalesi",
+    "description": "Fotoğraf tutkunları için muhteşem doğal bir şelale ve kısa yürüyüş rotası.",
+    "image": "sütüven-selalesi.jpg",
+    "lat": "39.5534",
+    "lng": "26.8156",
+    "static": true
+  },
+  {
+    "region": "gure",
+    "title": "Güre Sahili",
+    "description": "Termal tatil sonrasında deniz kenarında dinlenebileceğiniz geniş bir sahil alanı.",
+    "image": "kucukkuyu-sahili.jpg",
+    "lat": "39.5444",
+    "lng": "26.8089",
+    "static": true
+  },
+  {
+    "region": "akcay",
+    "title": "Akçay Kordonu",
+    "description": "Sahil boyunca yürüyüş ve bisiklet için ideal, akşam serinliğinde güzel bir gezinti yolu.",
+    "image": "kucukkuyu-sahili2.jpg",
+    "lat": "39.5778",
+    "lng": "26.9167",
+    "static": true
+  },
+  {
+    "region": "akcay",
+    "title": "Akçay Seyir Terası",
+    "description": "Körfez ve Kazdağları manzarasını sunan yemyeşil bir seyir noktası.",
+    "image": "kaz-daglari2.jpg",
+    "lat": "39.5812",
+    "lng": "26.9234",
+    "static": true
   },
   {
     "region": "ayvalik",
     "title": "Şeytan Sofrası",
-    "description": "Eski lav birikintilerinin aynı bölgede birikmesi sonucu oluşan kaya formları, yukarıdan bakıldığında sofraya benzetiliyor. Tepenin ucunda bulunan çukur ise Şeytan'ın ayak izi şeklinde yorumlandığı için bu bölgeye ''Şeytan Sofrası'' adı veriliyor.",
-    "image": "1779392484276.jpg"
+    "description": "Eski lav birikintilerinin aynı bölgede birikmesi sonucu oluşan kaya formları, yukarıdan bakıldığında sofraya benzetiliyor.",
+    "image": "1779394034779.jpg",
+    "lat": "39.6167",
+    "lng": "26.9833",
+    "static": false
   },
   {
     "region": "ayvalik",
-    "title": "Şeytan Sofrası",
-    "description": "Eski lav birikintilerinin aynı bölgede birikmesi sonucu oluşan kaya formları, yukarıdan bakıldığında sofraya benzetiliyor. Tepenin ucunda bulunan çukur ise Şeytan'ın ayak izi şeklinde yorumlandığı için bu bölgeye ''Şeytan Sofrası'' adı veriliyor.",
-    "image": "1779394034779.jpg"
+    "title": "Sarımsaklı Plajı",
+    "description": "Uzun kumsalı ve sığ deniziyle Ayvalık'ın en popüler sahil alanlarından biri.",
+    "image": "kucukkuyu-sahili3.jpg",
+    "lat": "39.5667",
+    "lng": "26.9667",
+    "static": true
   },
   {
     "region": "ayvalik",
-    "title": "Şeytan Sofrası",
-    "description": "Eski lav birikintilerinin aynı bölgede birikmesi sonucu oluşan kaya formları, yukarıdan bakıldığında sofraya benzetiliyor. Tepenin ucunda bulunan çukur ise Şeytan'ın ayak izi şeklinde yorumlandığı için bu bölgeye ''Şeytan Sofrası'' adı veriliyor.",
-    "image": "1779397645383.jpg"
+    "title": "Ayvalık Çarşısı",
+    "description": "Zeytinyağı, deniz ürünleri ve el yapımı hediyeliklerle dolu sokak pazarı keyfi.",
+    "image": "assos3.jpg",
+    "lat": "39.6222",
+    "lng": "26.9778",
+    "static": true
   },
   {
-    "region": [
-      "ayvalik",
-      "Ayvalık"
-    ],
-    "title": "Şeytan Sofrası",
-    "image": "1779398306182.jpg"
+    "region": "cunda",
+    "title": "Taş Sokaklar",
+    "description": "Cunda'nın tarihi taş sokaklarında keyifli bir yürüyüş yapabilirsiniz.",
+    "image": "assos2.jpg",
+    "lat": "39.6389",
+    "lng": "26.9556",
+    "static": true
+  },
+  {
+    "region": "cunda",
+    "title": "Ada Manzarası",
+    "description": "Deniz kenarından adanın en güzel panoramik fotoğraflarını çekebileceğiniz bir nokta.",
+    "image": "assos3.jpg",
+    "lat": "39.6412",
+    "lng": "26.9512",
+    "static": true
+  },
+  {
+    "region": "cunda",
+    "title": "Rüzgar Değirmeni",
+    "description": "Ege denizine bakan tarihi bir değirmenle adanın rüzgar dolu atmosferini keşfedin.",
+    "image": "kaz-daglari2.jpg",
+    "lat": "39.6445",
+    "lng": "26.9489",
+    "static": true
   }
 ]

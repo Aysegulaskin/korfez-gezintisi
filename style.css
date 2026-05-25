@@ -217,8 +217,9 @@ body{
 .search-box{
     position:absolute;
 
-    left:370px;
+    left:50%;
     top:25px;
+    transform:translateX(-50%);
 
     width:360px;
     height:65px;

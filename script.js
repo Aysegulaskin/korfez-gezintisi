@@ -259,28 +259,16 @@ function renderTab(tab) {
 }
 
 function renderTravelSection(region) {
-    const cards = travelCards[region] || [];
 
     if (!travelSection || !travelTitle || !travelGrid) {
         return;
     }
 
-    if (cards.length === 0) {
-        travelSection.classList.add("hidden");
-        return;
-    }
+    // Grid'i temizle (loadPlaces dolduracak)
+    travelGrid.innerHTML = "";
 
     const titleSuffix = region === "Altınoluk" ? "ta" : region === "Güre" ? "de" : "da";
     travelTitle.innerText = `🌅 ${region}'${titleSuffix} Gezilecek Yerler`;
-    travelGrid.innerHTML = cards.map(card => `
-        <div class="travel-card">
-            <img src="${card.image}" alt="${card.title}">
-            <div class="travel-content">
-                <h2>${card.title}</h2>
-                <p>${card.description}</p>
-            </div>
-        </div>
-    `).join("");
 
     travelSection.classList.remove("hidden");
 }
@@ -336,30 +324,33 @@ locations.forEach(location => {
 });
 
 
-    const searchInput = document.getElementById("searchInput");
+const searchInput = document.getElementById("searchInput");
 
-            locations.forEach(location => {
-                });
+if (searchInput) {
+    searchInput.addEventListener("input", () => {
+        const value = searchInput.value.trim().toLowerCase();
 
-    location.addEventListener("click", () => {
+        if (!travelSection) {
+            return;
+        }
 
-        console.log("BUTTON CLICKED");
+        if (value === "") {
+            document.querySelectorAll(".travel-card").forEach(card => {
+                card.style.display = "block";
+            });
+            return;
+        }
 
-        const regionKey = location.dataset.region;
+        travelSection.classList.remove("hidden");
 
-        console.log("regionKey:", regionKey);
-
-        const regionName = regionMap[regionKey] || regionKey;
-
-        console.log("regionName:", regionName);
-
-        currentRegion = regionName;
-
-        renderTravelSection(regionName);
-
-        loadPlaces(regionName);
-
+        document.querySelectorAll(".travel-card").forEach(card => {
+            const title = card.querySelector("h2")?.innerText.toLowerCase() || "";
+            const desc = card.querySelector("p")?.innerText.toLowerCase() || "";
+            const visible = title.includes(value) || desc.includes(value);
+            card.style.display = visible ? "block" : "none";
+        });
     });
+}
 
     const loginOpenBtn =
         document.getElementById("loginOpenBtn");
@@ -843,95 +834,170 @@ locations.forEach(location => {
     
     });
 
+// Aktif marker'ları takip etmek için
+let activePlaceMarkers = [];
+
+function clearPlaceMarkers() {
+    activePlaceMarkers.forEach(m => map.removeLayer(m));
+    activePlaceMarkers = [];
+}
+
+function normalizeRegion(str) {
+    return str
+        .toString()
+        .toLowerCase()
+        .replaceAll("ı", "i")
+        .replaceAll("ü", "u")
+        .replaceAll("ş", "s")
+        .replaceAll("ğ", "g")
+        .replaceAll("ö", "o")
+        .replaceAll("ç", "c")
+        .replace(/\s+/g, "");
+}
+
+function makePlaceIcon(color) {
+    return L.divIcon({
+        className: "",
+        html: `<div style="
+            background: ${color};
+            border-radius: 50% 50% 50% 0;
+            width: 32px;
+            height: 32px;
+            transform: rotate(-45deg);
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            transition: background 0.2s;
+        "></div>`,
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -34]
+    });
+}
+
+const defaultIcon = makePlaceIcon("#e74c3c");   // kırmızı
+const activeIcon  = makePlaceIcon("#f1c40f");   // sarı
+
+function resetAllMarkers() {
+    activePlaceMarkers.forEach(m => m.setIcon(defaultIcon));
+}
+
 async function loadPlaces(regionName) {
 
-    console.log("loadPlaces called with:", regionName);
+    console.log("loadPlaces çalıştı:", regionName);
 
-    const container =
-    document.getElementById("placesContainer");
+    clearPlaceMarkers();
 
-    if(!container){
-        console.log("placesContainer not found!");
+    if (!travelGrid) {
+        console.log("travelGrid bulunamadı");
         return;
     }
 
-    container.innerHTML = "";
-map.eachLayer(layer => {
-
-    if(layer instanceof L.Marker){
-
-        map.removeLayer(layer);
-
-    }
-
-});
     try {
-        console.log("Fetching from:", `${apiUrl}/places`);
         const response = await fetch(`${apiUrl}/places`);
-        if (!response.ok) {
-            throw new Error(`Places fetch failed: ${response.status}`);
-        }
-
         const places = await response.json();
-        console.log("All places:", places);
+
+        const selectedRegion = normalizeRegion(regionName);
 
         const filteredPlaces = places.filter(place => {
-            return place.region.toLowerCase() === regionName.toLowerCase();
+            const placeRegion = normalizeRegion(
+                Array.isArray(place.region) ? place.region[0] : place.region
+            );
+            return placeRegion === selectedRegion;
         });
 
-        console.log("Filtered places for", regionName, ":", filteredPlaces);
+        console.log("Filtrelenen:", filteredPlaces);
 
-        if (filteredPlaces.length === 0) {
-            container.innerHTML = `<p>Bu bölge için henüz yer bulunamadı.</p>`;
-            return;
-        }
-if(place.lat && place.lng){
+        // Önce tüm kartları ve marker'ları oluştur, sonra event'leri bağla
+        const markerMap = {}; // index -> marker
 
-    L.marker([
-        parseFloat(place.lat),
-        parseFloat(place.lng)
-    ], {
-        icon: customIcon
-    })
-    .addTo(map)
-    .bindPopup(`
-        <b>${place.title}</b><br>
-        ${place.description}
-    `);
+        filteredPlaces.forEach((place, idx) => {
+            const isUploaded = !place.static;
+            const imgSrc = isUploaded
+                ? `${apiUrl}/uploads/${place.image}`
+                : `/images/${place.image}`;
 
-}
-        filteredPlaces.forEach(place => {
-            if(place.lat && place.lng){
+            const lat = parseFloat(place.lat);
+            const lng = parseFloat(place.lng);
+            const hasCoord = !isNaN(lat) && !isNaN(lng);
 
-    L.marker([
-        parseFloat(place.lat),
-        parseFloat(place.lng)
-    ], {
-        icon: customIcon
-    })
-    .addTo(map)
-    .bindPopup(`
-        <b>${place.title}</b><br>
-        ${place.description}
-    `);
+            const locationBtn = hasCoord
+                ? `<button class="goto-location" data-idx="${idx}" style="
+                    margin-top:10px;
+                    background: none;
+                    border: 1px solid rgba(255,255,255,0.4);
+                    color: #fff;
+                    padding: 5px 12px;
+                    border-radius: 20px;
+                    cursor: pointer;
+                    font-size: 13px;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 5px;
+                    transition: background 0.2s;
+                  ">📍 Konuma Git</button>`
+                : '';
 
-}
-            container.innerHTML += `
-                <div class="place-card">
-                    <img
-                        src="${apiUrl}/uploads/${place.image}"
-                        class="place-image"
-                        alt="${place.title}"
-                    >
-                    <div class="place-content">
+            travelGrid.innerHTML += `
+                <div class="travel-card">
+                    <img src="${imgSrc}" alt="${place.title}">
+                    <div class="travel-content">
                         <h2>${place.title}</h2>
                         <p>${place.description}</p>
+                        ${locationBtn}
                     </div>
                 </div>
             `;
+
+            if (hasCoord) {
+                const marker = L.marker([lat, lng], { icon: defaultIcon })
+                    .addTo(map)
+                    .bindPopup(`
+                        <div style="min-width:160px; text-align:center;">
+                            <strong style="font-size:14px;">${place.title}</strong><br>
+                            <span style="font-size:12px; color:#555;">${place.description}</span>
+                        </div>
+                    `);
+
+                // Marker'a tıklayınca sadece popup açılsın, scroll yok
+                marker.on("click", function() {
+                    this.openPopup();
+                });
+
+                markerMap[idx] = marker;
+                activePlaceMarkers.push(marker);
+            }
         });
-    } catch (err) {
-        console.log("loadPlaces error:", err);
-        container.innerHTML = `<p>Yerler yüklenemedi. Lütfen daha sonra tekrar deneyin.</p>`;  
+
+        // "Konuma Git" butonlarına event ekle
+        travelGrid.querySelectorAll('.goto-location').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const idx = parseInt(this.getAttribute('data-idx'));
+                const marker = markerMap[idx];
+                if (!marker) return;
+
+                // Tüm marker'ları sıfırla, sadece bu marker'ı sarıya çevir
+                resetAllMarkers();
+                marker.setIcon(activeIcon);
+
+                // Haritayı o marker'a götür ve popup aç
+                map.setView(marker.getLatLng(), 15, { animate: true });
+                marker.openPopup();
+
+                // Sayfayı haritaya scroll et
+                document.getElementById("map").scrollIntoView({ behavior: "smooth" });
+            });
+        });
+
+        // İlk yüklemede haritayı tüm marker'lara sığdır
+        if (activePlaceMarkers.length > 0) {
+            const group = L.featureGroup(activePlaceMarkers);
+            map.fitBounds(group.getBounds().pad(0.3));
+        }
+
+    } catch(err) {
+        console.log(err);
     }
-    }
+}
+
+    
