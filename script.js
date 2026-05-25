@@ -385,7 +385,7 @@ if (searchInput) {
          window.location.hostname === "localhost" ||
          window.location.hostname === "127.0.0.1"
            ? "http://localhost:3000"
-           : "https://korfez-backend.onrender.com";
+           : window.location.origin;
 
     function getLocalAuthUsers() {
         return JSON.parse(localStorage.getItem("authUsers") || "[]");
@@ -914,7 +914,7 @@ async function loadPlaces(regionName) {
             const isUploaded = !place.static;
             const imgSrc = isUploaded
                 ? `${apiUrl}/uploads/${place.image}`
-                : `/images/${place.image}`;
+                : `${apiUrl}/images/${place.image}`;
 
             const lat = parseFloat(place.lat);
             const lng = parseFloat(place.lng);
@@ -939,7 +939,7 @@ async function loadPlaces(regionName) {
 
             travelGrid.innerHTML += `
                 <div class="travel-card">
-                    <img src="${imgSrc}" alt="${place.title}">
+                    <img src="${imgSrc}" alt="${place.title}" loading="lazy" decoding="async">
                     <div class="travel-content">
                         <h2>${place.title}</h2>
                         <p>${place.description}</p>
@@ -996,7 +996,22 @@ async function loadPlaces(regionName) {
         }
 
     } catch(err) {
-        console.log(err);
+        console.log("API Hatası, travelCards fallback'i kullanılıyor:", err);
+        
+        // API başarısız olursa hardcoded travelCards kullan
+        const cardsForRegion = travelCards[regionName] || [];
+        
+        cardsForRegion.forEach((card, idx) => {
+            travelGrid.innerHTML += `
+                <div class="travel-card">
+                    <img src="${card.image}" alt="${card.title}">
+                    <div class="travel-content">
+                        <h2>${card.title}</h2>
+                        <p>${card.description}</p>
+                    </div>
+                </div>
+            `;
+        });
     }
 }
 
