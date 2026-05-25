@@ -326,14 +326,26 @@ locations.forEach(location => {
 
 const searchInput = document.getElementById("searchInput");
 
+let allPlaces = []; // Tüm yerler cache'de tutulacak
+
+// Sayfa yüklenince tüm yerleri önceden çek
+async function preloadAllPlaces() {
+    try {
+        const res = await fetch(`${apiUrl}/places`);
+        allPlaces = await res.json();
+    } catch (err) {
+        console.log("Yerler önceden yüklenemedi:", err);
+    }
+}
+preloadAllPlaces();
+
 if (searchInput) {
-    searchInput.addEventListener("input", () => {
+    searchInput.addEventListener("input", async () => {
         const value = searchInput.value.trim().toLowerCase();
 
-        if (!travelSection) {
-            return;
-        }
+        if (!travelSection || !travelGrid) return;
 
+        // Boşsa mevcut görünümü koru
         if (value === "") {
             document.querySelectorAll(".travel-card").forEach(card => {
                 card.style.display = "block";
@@ -341,13 +353,41 @@ if (searchInput) {
             return;
         }
 
-        travelSection.classList.remove("hidden");
+        // Tüm yerler arasında ara
+        const results = allPlaces.filter(place => {
+            const title = (place.title || "").toLowerCase();
+            const desc  = (place.description || "").toLowerCase();
+            const region = (place.region || "").toLowerCase();
+            return title.includes(value) || desc.includes(value) || region.includes(value);
+        });
 
-        document.querySelectorAll(".travel-card").forEach(card => {
-            const title = card.querySelector("h2")?.innerText.toLowerCase() || "";
-            const desc = card.querySelector("p")?.innerText.toLowerCase() || "";
-            const visible = title.includes(value) || desc.includes(value);
-            card.style.display = visible ? "block" : "none";
+        // Sonuçları göster
+        travelSection.classList.remove("hidden");
+        travelGrid.innerHTML = "";
+
+        if (results.length === 0) {
+            travelGrid.innerHTML = `<p style="color:#aaa; padding:20px;">Sonuç bulunamadı.</p>`;
+            return;
+        }
+
+        results.forEach(place => {
+            const isUploaded = !place.static;
+            const imgSrc = isUploaded
+                ? `${apiUrl}/uploads/${place.image}`
+                : `${apiUrl}/images/${place.image}`;
+
+            const regionLabel = regionMap[place.region] || place.region;
+
+            travelGrid.innerHTML += `
+                <div class="travel-card">
+                    <img src="${imgSrc}" alt="${place.title}" loading="lazy" decoding="async">
+                    <div class="travel-content">
+                        <span style="font-size:11px; color:#aaa; text-transform:uppercase; letter-spacing:1px;">📍 ${regionLabel}</span>
+                        <h2>${place.title}</h2>
+                        <p>${place.description}</p>
+                    </div>
+                </div>
+            `;
         });
     });
 }
