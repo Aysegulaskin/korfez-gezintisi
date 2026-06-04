@@ -947,10 +947,11 @@ async function loadPlaces(regionKey, regionName) {
 
         console.log("Filtrelenen:", filteredPlaces);
 
-        // Önce tüm kartları ve marker'ları oluştur, sonra event'leri bağla
-        const markerMap = {}; // index -> marker
+        // place.id -> marker eşleşmesi
+        const markerMap = {};
 
-        filteredPlaces.forEach((place, idx) => {
+        // HTML'i tek seferde oluştur (innerHTML += sorununu önler)
+        travelGrid.innerHTML = filteredPlaces.map(place => {
             const isUploaded = !place.static;
             const imgSrc = isUploaded
                 ? `${apiUrl}/uploads/${place.image}`
@@ -961,16 +962,14 @@ async function loadPlaces(regionKey, regionName) {
             const hasCoord = !isNaN(lat) && !isNaN(lng);
 
             const locationBtn = hasCoord
-                ? `<button class="goto-location" data-idx="${idx}">
+                ? `<button class="goto-location" data-id="${place.id}">
                     📍 Haritada Göster
                    </button>
-                   <span class="coord-info">
-                    ${lat.toFixed(4)}° K, ${lng.toFixed(4)}° D
-                   </span>`
+                   <span class="coord-info">${lat.toFixed(4)}° K, ${lng.toFixed(4)}° D</span>`
                 : '';
 
-            travelGrid.innerHTML += `
-                <div class="travel-card" id="card-${idx}">
+            return `
+                <div class="travel-card" id="card-${place.id}">
                     <img src="${imgSrc}" alt="${place.title}" loading="lazy" decoding="async">
                     <div class="travel-content">
                         <h2>${place.title}</h2>
@@ -979,6 +978,13 @@ async function loadPlaces(regionKey, regionName) {
                     </div>
                 </div>
             `;
+        }).join("");
+
+        // Marker'ları oluştur
+        filteredPlaces.forEach(place => {
+            const lat = parseFloat(place.lat);
+            const lng = parseFloat(place.lng);
+            const hasCoord = !isNaN(lat) && !isNaN(lng);
 
             if (hasCoord) {
                 const marker = L.marker([lat, lng], { icon: defaultIcon })
@@ -990,50 +996,45 @@ async function loadPlaces(regionKey, regionName) {
                         </div>
                     `);
 
-                // Marker'a tıklayınca popup aç ve kartı vurgula
                 marker.on("click", function() {
                     this.openPopup();
-                    // Tüm kartların vurgusunu kaldır
+                    resetAllMarkers();
+                    this.setIcon(activeIcon);
                     document.querySelectorAll(".travel-card").forEach(c => c.classList.remove("card-active"));
-                    // Bu kartı vurgula
-                    const card = document.getElementById(`card-${idx}`);
+                    const card = document.getElementById(`card-${place.id}`);
                     if (card) {
                         card.classList.add("card-active");
                         card.scrollIntoView({ behavior: "smooth", block: "center" });
                     }
                 });
 
-                markerMap[idx] = marker;
+                markerMap[place.id] = marker;
                 activePlaceMarkers.push(marker);
             }
         });
 
-        // "Konuma Git" butonlarına event ekle
+        // "Haritada Göster" butonlarına event ekle
         travelGrid.querySelectorAll('.goto-location').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
-                const idx = parseInt(this.getAttribute('data-idx'));
-                const marker = markerMap[idx];
+                const id = parseInt(this.getAttribute('data-id'));
+                const marker = markerMap[id];
                 if (!marker) return;
 
-                // Tüm marker'ları sıfırla, sadece bu marker'ı sarıya çevir
                 resetAllMarkers();
                 marker.setIcon(activeIcon);
 
-                // Tüm kart vurgularını kaldır, bu kartı vurgula
                 document.querySelectorAll(".travel-card").forEach(c => c.classList.remove("card-active"));
-                document.getElementById(`card-${idx}`)?.classList.add("card-active");
+                document.getElementById(`card-${id}`)?.classList.add("card-active");
 
-                // Haritayı o marker'a götür ve popup aç
                 map.setView(marker.getLatLng(), 15, { animate: true });
                 marker.openPopup();
 
-                // Sayfayı haritaya scroll et
                 document.getElementById("map").scrollIntoView({ behavior: "smooth" });
             });
         });
 
-        // İlk yüklemede haritayı tüm marker'lara sığdır
+        // Haritayı tüm marker'lara sığdır
         if (activePlaceMarkers.length > 0) {
             const group = L.featureGroup(activePlaceMarkers);
             map.fitBounds(group.getBounds().pad(0.3));
