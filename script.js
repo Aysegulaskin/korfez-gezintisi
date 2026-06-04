@@ -11,8 +11,8 @@ const apiUrl =
         : window.location.origin;
 
 const bounds = [
-    [39.20, 26.45],
-    [39.75, 27.20]
+    [39.10, 26.20],
+    [39.80, 27.30]
 ];
 
 map.setMaxBounds(bounds);
