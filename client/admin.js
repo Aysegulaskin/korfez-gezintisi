@@ -1,7 +1,7 @@
 const apiUrl =
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1"
-        ? "http://localhost:3000"
+        ? "http://localhost:5004"
         : window.location.origin;
 
 // Şifre env'den gelmiyor, basit koruma — production'da değiştir
@@ -53,6 +53,60 @@ function showAdmin() {
     adminPanel.classList.remove("hidden");
     loadPlaces();
 }
+
+// ─── Koordinat Harita Seçici ─────────────────────────────────────────────────
+
+let pickerMap = null;
+let pickerMarker = null;
+
+const coordPickerToggle = document.getElementById("coordPickerToggle");
+const coordPickerMap    = document.getElementById("coordPickerMap");
+const coordPickerInfo   = document.getElementById("coordPickerInfo");
+const latInput          = document.getElementById("latitude");
+const lngInput          = document.getElementById("longitude");
+
+coordPickerToggle.addEventListener("click", () => {
+    const isHidden = coordPickerMap.classList.contains("hidden");
+
+    if (isHidden) {
+        coordPickerMap.classList.remove("hidden");
+        coordPickerToggle.textContent = "✕ Haritayı Kapat";
+        coordPickerToggle.classList.add("active");
+
+        // Haritayı başlat (sadece bir kez)
+        if (!pickerMap) {
+            pickerMap = L.map("coordPickerMap").setView([39.50, 26.85], 10);
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 19
+            }).addTo(pickerMap);
+
+            pickerMap.on("click", function(e) {
+                const { lat, lng } = e.latlng;
+
+                // Önceki marker'ı kaldır
+                if (pickerMarker) pickerMap.removeLayer(pickerMarker);
+
+                pickerMarker = L.marker([lat, lng]).addTo(pickerMap);
+
+                // Input'lara yaz
+                latInput.value = lat.toFixed(6);
+                lngInput.value = lng.toFixed(6);
+
+                // Bilgi göster
+                coordPickerInfo.classList.remove("hidden");
+                coordPickerInfo.textContent = `📍 Seçilen: ${lat.toFixed(5)}° K, ${lng.toFixed(5)}° D`;
+            });
+        }
+
+        // Haritanın boyutunu doğru hesaplaması için
+        setTimeout(() => pickerMap.invalidateSize(), 100);
+
+    } else {
+        coordPickerMap.classList.add("hidden");
+        coordPickerToggle.textContent = "🗺️ Haritadan Konum Seç";
+        coordPickerToggle.classList.remove("active");
+    }
+});
 
 // ─── Fotoğraf Seçimi ─────────────────────────────────────────────────────────
 

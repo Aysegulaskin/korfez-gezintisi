@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yönetici Paneli</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <link rel="stylesheet" href="/client/admin.css">
 </head>
 <body>
@@ -45,6 +46,12 @@
             <input type="text" id="longitude" placeholder="Boylam (örn: 26.6219)">
         </div>
 
+        <div id="coordPickerToggle" class="coord-toggle">
+            🗺️ Haritadan Konum Seç
+        </div>
+        <div id="coordPickerMap" class="hidden"></div>
+        <div id="coordPickerInfo" class="coord-picked hidden"></div>
+
         <div id="dropZone">
             📷 Fotoğrafı buraya sürükle veya tıkla
             <input type="file" id="fileInput" accept="image/*">
@@ -75,6 +82,7 @@
 
 </div>
 
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="/client/admin.js"></script>
 </body>
 </html>

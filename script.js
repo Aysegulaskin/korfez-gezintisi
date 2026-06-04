@@ -7,7 +7,7 @@ const map = L.map('map', {
 const apiUrl =
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1"
-        ? "http://localhost:3000"
+        ? "http://localhost:5004"
         : window.location.origin;
 
 const bounds = [
@@ -964,24 +964,16 @@ async function loadPlaces(regionName) {
             const hasCoord = !isNaN(lat) && !isNaN(lng);
 
             const locationBtn = hasCoord
-                ? `<button class="goto-location" data-idx="${idx}" style="
-                    margin-top:10px;
-                    background: none;
-                    border: 1px solid rgba(255,255,255,0.4);
-                    color: #fff;
-                    padding: 5px 12px;
-                    border-radius: 20px;
-                    cursor: pointer;
-                    font-size: 13px;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 5px;
-                    transition: background 0.2s;
-                  ">📍 Konuma Git</button>`
+                ? `<button class="goto-location" data-idx="${idx}">
+                    📍 Haritada Göster
+                   </button>
+                   <span class="coord-info">
+                    ${lat.toFixed(4)}° K, ${lng.toFixed(4)}° D
+                   </span>`
                 : '';
 
             travelGrid.innerHTML += `
-                <div class="travel-card">
+                <div class="travel-card" id="card-${idx}">
                     <img src="${imgSrc}" alt="${place.title}" loading="lazy" decoding="async">
                     <div class="travel-content">
                         <h2>${place.title}</h2>
@@ -1001,9 +993,17 @@ async function loadPlaces(regionName) {
                         </div>
                     `);
 
-                // Marker'a tıklayınca sadece popup açılsın, scroll yok
+                // Marker'a tıklayınca popup aç ve kartı vurgula
                 marker.on("click", function() {
                     this.openPopup();
+                    // Tüm kartların vurgusunu kaldır
+                    document.querySelectorAll(".travel-card").forEach(c => c.classList.remove("card-active"));
+                    // Bu kartı vurgula
+                    const card = document.getElementById(`card-${idx}`);
+                    if (card) {
+                        card.classList.add("card-active");
+                        card.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }
                 });
 
                 markerMap[idx] = marker;
@@ -1022,6 +1022,10 @@ async function loadPlaces(regionName) {
                 // Tüm marker'ları sıfırla, sadece bu marker'ı sarıya çevir
                 resetAllMarkers();
                 marker.setIcon(activeIcon);
+
+                // Tüm kart vurgularını kaldır, bu kartı vurgula
+                document.querySelectorAll(".travel-card").forEach(c => c.classList.remove("card-active"));
+                document.getElementById(`card-${idx}`)?.classList.add("card-active");
 
                 // Haritayı o marker'a götür ve popup aç
                 map.setView(marker.getLatLng(), 15, { animate: true });

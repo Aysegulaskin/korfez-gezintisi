@@ -248,7 +248,7 @@ app.put("/places/:id", async (req, res) => {
 
 // ─── Sunucuyu Başlat ─────────────────────────────────────────────────────────
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5004;
 
 app.listen(PORT, async () => {
     console.log(`🚀 Sunucu port ${PORT}'de çalışıyor`);

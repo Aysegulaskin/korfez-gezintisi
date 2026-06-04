@@ -67,6 +67,41 @@ body{
     overflow:hidden;
     border:1px solid rgba(255,255,255,0.08);
     box-shadow:0 20px 40px rgba(0,0,0,0.35);
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.travel-card.card-active {
+    border: 1.5px solid #f1c40f;
+    box-shadow: 0 0 20px rgba(241,196,15,0.35);
+}
+
+.goto-location {
+    margin-top: 12px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    padding: 7px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s, border 0.2s;
+}
+
+.goto-location:hover {
+    background: rgba(241,196,15,0.15);
+    border-color: #f1c40f;
+    color: #f1c40f;
+}
+
+.coord-info {
+    display: block;
+    margin-top: 6px;
+    font-size: 11px;
+    color: #64748b;
+    letter-spacing: 0.3px;
 }
 
 .travel-card img{
