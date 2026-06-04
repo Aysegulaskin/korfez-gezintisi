@@ -324,7 +324,7 @@ locations.forEach(location => {
 
         renderTravelSection(regionName);
 
-        loadPlaces(regionName);
+        loadPlaces(regionKey, regionName);  // key ve isim ikisini gönder
 
     });
 
@@ -924,9 +924,9 @@ function resetAllMarkers() {
     activePlaceMarkers.forEach(m => m.setIcon(defaultIcon));
 }
 
-async function loadPlaces(regionName) {
+async function loadPlaces(regionKey, regionName) {
 
-    console.log("loadPlaces çalıştı:", regionName);
+    console.log("loadPlaces çalıştı:", regionKey, regionName);
 
     clearPlaceMarkers();
 
@@ -939,13 +939,10 @@ async function loadPlaces(regionName) {
         const response = await fetch(`${apiUrl}/places`);
         const places = await response.json();
 
-        const selectedRegion = normalizeRegion(regionName);
-
+        // DB'deki region key ile direkt karşılaştır (cunda, kucukkuyu vs.)
         const filteredPlaces = places.filter(place => {
-            const placeRegion = normalizeRegion(
-                Array.isArray(place.region) ? place.region[0] : place.region
-            );
-            return placeRegion === selectedRegion;
+            const placeRegion = (Array.isArray(place.region) ? place.region[0] : place.region) || "";
+            return placeRegion.toLowerCase() === regionKey.toLowerCase();
         });
 
         console.log("Filtrelenen:", filteredPlaces);

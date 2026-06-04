@@ -166,16 +166,8 @@ app.post("/upload", upload.single("photo"), async (req, res) => {
             return res.status(400).json({ error: "Bölge, başlık ve açıklama gerekli" });
         }
 
-        // Bölge adını normalize et
-        const normalizedRegion = rawRegion
-            .toLowerCase()
-            .replace(/ı/g, "i")
-            .replace(/ü/g, "u")
-            .replace(/ş/g, "s")
-            .replace(/ğ/g, "g")
-            .replace(/ö/g, "o")
-            .replace(/ç/g, "c")
-            .replace(/\s+/g, "");
+        // Region zaten normalize key olarak geliyor (kucukkuyu, cunda vs.)
+        const normalizedRegion = rawRegion.toLowerCase().replace(/\s+/g, "");
 
         const result = await pool.query(
             `INSERT INTO places (region, title, description, image, lat, lng, static)

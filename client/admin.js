@@ -165,7 +165,7 @@ uploadBtn.addEventListener("click", async () => {
 
     const formData = new FormData();
     formData.append("photo",       selectedFile);
-    formData.append("region",      regionLabels[region]);
+    formData.append("region",      region);  // key gönder: kucukkuyu, cunda vs.
     formData.append("title",       title);
     formData.append("description", description);
     formData.append("lat",         lat);
