@@ -60,10 +60,21 @@ async function initDB() {
 app.use(cors());
 app.use(express.json({ limit: "20mb" }));
 
-// Statik dosyalar
-const staticOptions = { maxAge: "7d", etag: true };
-app.use("/images", express.static(path.join(__dirname, "../images"), staticOptions));
-app.use(express.static(path.join(__dirname, ".."), staticOptions));
+// Statik dosyalar - JS/CSS için cache yok, resimler için 7 gün
+app.use("/images", express.static(path.join(__dirname, "../images"), { maxAge: "7d", etag: true }));
+
+// JS, CSS, HTML için cache yok
+app.use(express.static(path.join(__dirname, ".."), {
+    etag: false,
+    lastModified: false,
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html")) {
+            res.set("Cache-Control", "no-store");
+        } else {
+            res.set("Cache-Control", "public, max-age=604800");
+        }
+    }
+}));
 
 // ─── Multer — memory storage (diske yazmıyor) ────────────────────────────────
 
