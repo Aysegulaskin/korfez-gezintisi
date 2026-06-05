@@ -374,9 +374,8 @@ if (searchInput) {
         }
 
         results.forEach(place => {
-            const isUploaded = !place.static;
-            const imgSrc = isUploaded
-                ? `${apiUrl}/uploads/${place.image}`
+            const imgSrc = place.image_mime
+                ? `${apiUrl}/photo/${place.id}`
                 : `${apiUrl}/images/${place.image}`;
 
             const regionLabel = regionMap[place.region] || place.region;
