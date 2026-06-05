@@ -948,9 +948,9 @@ async function loadPlaces(regionKey, regionName) {
 
         // HTML'i tek seferde oluştur (innerHTML += sorununu önler)
         travelGrid.innerHTML = filteredPlaces.map(place => {
-            const isUploaded = !place.static;
-            const imgSrc = isUploaded
-                ? `${apiUrl}/uploads/${place.image}`
+            // Resim kaynağı: DB'den binary geliyorsa /photo/:id, statik ise /images/
+            const imgSrc = place.image_mime
+                ? `${apiUrl}/photo/${place.id}`
                 : `${apiUrl}/images/${place.image}`;
 
             const lat = parseFloat(place.lat);

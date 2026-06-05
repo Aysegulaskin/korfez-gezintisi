@@ -231,9 +231,9 @@ async function loadPlaces() {
         }
 
         placesList.innerHTML = places.map(place => {
-            const imgSrc = place.static
-                ? `${apiUrl}/images/${place.image}`
-                : `${apiUrl}/uploads/${place.image}`;
+            const imgSrc = place.image_mime
+                ? `${apiUrl}/photo/${place.id}`
+                : `${apiUrl}/images/${place.image}`;
 
             return `
                 <div class="place-row" id="place-${place.id}">

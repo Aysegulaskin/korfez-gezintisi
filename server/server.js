@@ -11,23 +11,21 @@ const app = express();
 
 // ─── PostgreSQL Bağlantısı ───────────────────────────────────────────────────
 
-// Render'da DATABASE_URL, lokalde ayrı değişkenler
 const pool = process.env.DATABASE_URL
-    ? new Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false }
-    })
+    ? new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } })
     : new Pool({
         host:     process.env.DB_HOST     || "localhost",
         port:     parseInt(process.env.DB_PORT) || 5432,
         database: process.env.DB_NAME     || "korfez_db",
         user:     process.env.DB_USER     || "postgres",
-        password: process.env.DB_PASSWORD || "korfez123",
+        password: process.env.DB_PASSWORD || "luna1234567",
     });
 
-// Tabloyu oluştur (yoksa)
+// ─── Veritabanı Başlat ───────────────────────────────────────────────────────
+
 async function initDB() {
     try {
+        // image_data: resim binary, image_mime: image/jpeg gibi
         await pool.query(`
             CREATE TABLE IF NOT EXISTS places (
                 id          SERIAL PRIMARY KEY,
@@ -35,82 +33,44 @@ async function initDB() {
                 title       VARCHAR(255) NOT NULL,
                 description TEXT,
                 image       VARCHAR(255),
+                image_data  BYTEA,
+                image_mime  VARCHAR(50),
                 lat         NUMERIC(10, 7),
                 lng         NUMERIC(10, 7),
                 static      BOOLEAN DEFAULT false,
                 created_at  TIMESTAMP DEFAULT NOW()
             );
         `);
-        console.log("✅ Veritabanı tablosu hazır");
 
-        // Tablo boşsa places.json'dan yükle — sadece bir kere
+        // Eski tabloda image_data yoksa ekle
+        await pool.query(`
+            ALTER TABLE places ADD COLUMN IF NOT EXISTS image_data BYTEA;
+            ALTER TABLE places ADD COLUMN IF NOT EXISTS image_mime VARCHAR(50);
+        `);
+
         const result = await pool.query("SELECT COUNT(*) FROM places");
-        const count = parseInt(result.rows[0].count);
-        console.log(`ℹ️  Veritabanında ${count} yer mevcut`);
-
-        if (count === 0) {
-            const placesPath = path.join(__dirname, "data", "places.json");
-            if (fs.existsSync(placesPath)) {
-                const places = JSON.parse(fs.readFileSync(placesPath, "utf8"));
-                for (const p of places) {
-                    await pool.query(
-                        `INSERT INTO places (region, title, description, image, lat, lng, static)
-                         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-                        [
-                            p.region,
-                            p.title,
-                            p.description,
-                            p.image,
-                            p.lat ? parseFloat(p.lat) : null,
-                            p.lng ? parseFloat(p.lng) : null,
-                            p.static === true
-                        ]
-                    );
-                }
-                console.log(`✅ ${places.length} yer places.json'dan aktarıldı`);
-            }
-        }
+        console.log(`✅ Veritabanı hazır — ${result.rows[0].count} yer mevcut`);
     } catch (err) {
-        console.error("❌ Veritabanı başlatma hatası:", err.message);
+        console.error("❌ DB hatası:", err.message);
     }
 }
 
 // ─── Middleware ──────────────────────────────────────────────────────────────
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "20mb" }));
 
-// Statik dosyalar - 7 günlük cache ile
-const staticOptions = {
-    maxAge: "7d",
-    etag: true,
-    lastModified: true
-};
-// Uploads klasörü: Render'da /opt/render/project/uploads, lokalde client/uploads
-const UPLOADS_DIR = process.env.UPLOADS_DIR
-    || path.join(__dirname, "../client/uploads");
-
-app.use("/images",  express.static(path.join(__dirname, "../images"),  staticOptions));
-app.use("/uploads", express.static(UPLOADS_DIR, staticOptions));
-
-// index.html ve diğer frontend dosyalarını da sun
+// Statik dosyalar
+const staticOptions = { maxAge: "7d", etag: true };
+app.use("/images", express.static(path.join(__dirname, "../images"), staticOptions));
 app.use(express.static(path.join(__dirname, ".."), staticOptions));
 
-// ─── Multer (Fotoğraf Yükleme) ───────────────────────────────────────────────
+// ─── Multer — memory storage (diske yazmıyor) ────────────────────────────────
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        if (!fs.existsSync(UPLOADS_DIR)) {
-            fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-        }
-        cb(null, UPLOADS_DIR);
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 10 * 1024 * 1024 } // 10MB
 });
-
-const upload = multer({ storage });
 
 // ─── Routes ──────────────────────────────────────────────────────────────────
 
@@ -118,16 +78,15 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../index.html"));
 });
 
-// Admin paneli
 app.get("/admin", (req, res) => {
     res.sendFile(path.join(__dirname, "../client/admin.html"));
 });
 
-// Tüm yerleri getir
+// Tüm yerleri getir (image_data hariç — büyük olduğu için)
 app.get("/places", async (req, res) => {
     try {
         const result = await pool.query(
-            "SELECT * FROM places ORDER BY id ASC"
+            "SELECT id, region, title, description, image, image_mime, lat, lng, static, created_at FROM places ORDER BY id ASC"
         );
         res.json(result.rows);
     } catch (err) {
@@ -137,25 +96,41 @@ app.get("/places", async (req, res) => {
 });
 
 // Bölgeye göre yerleri getir
-app.get("/places/:region", async (req, res) => {
+app.get("/places/region/:region", async (req, res) => {
     try {
         const result = await pool.query(
-            "SELECT * FROM places WHERE region = $1 ORDER BY id ASC",
+            "SELECT id, region, title, description, image, image_mime, lat, lng, static, created_at FROM places WHERE region = $1 ORDER BY id ASC",
             [req.params.region]
         );
         res.json(result.rows);
     } catch (err) {
-        console.error("GET /places/:region hatası:", err.message);
         res.status(500).json({ error: "Veriler alınamadı" });
     }
 });
 
-// Yeni yer ekle (fotoğraf yükleme ile)
+// Resmi getir — DB'den binary olarak sun
+app.get("/photo/:id", async (req, res) => {
+    try {
+        const result = await pool.query(
+            "SELECT image_data, image_mime FROM places WHERE id = $1",
+            [req.params.id]
+        );
+        if (!result.rows[0] || !result.rows[0].image_data) {
+            return res.status(404).send("Resim bulunamadı");
+        }
+        const mime = result.rows[0].image_mime || "image/jpeg";
+        res.set("Content-Type", mime);
+        res.set("Cache-Control", "public, max-age=604800");
+        res.send(result.rows[0].image_data);
+    } catch (err) {
+        res.status(500).send("Resim alınamadı");
+    }
+});
+
+// Yeni yer ekle
 app.post("/upload", upload.single("photo"), async (req, res) => {
     try {
-        if (!req.file) {
-            return res.status(400).json({ error: "Fotoğraf gerekli" });
-        }
+        if (!req.file) return res.status(400).json({ error: "Fotoğraf gerekli" });
 
         const { title, description, lat, lng } = req.body;
         const rawRegion = req.body.region || "";
@@ -164,46 +139,40 @@ app.post("/upload", upload.single("photo"), async (req, res) => {
             return res.status(400).json({ error: "Bölge, başlık ve açıklama gerekli" });
         }
 
-        // Region zaten normalize key olarak geliyor (kucukkuyu, cunda vs.)
         const normalizedRegion = rawRegion.toLowerCase().replace(/\s+/g, "");
 
         const result = await pool.query(
-            `INSERT INTO places (region, title, description, image, lat, lng, static)
-             VALUES ($1, $2, $3, $4, $5, $6, false)
-             RETURNING *`,
+            `INSERT INTO places (region, title, description, image, image_data, image_mime, lat, lng, static)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, false)
+             RETURNING id, region, title, description, image, image_mime, lat, lng, static, created_at`,
             [
                 normalizedRegion,
                 title,
                 description,
-                req.file.filename,
+                req.file.originalname,
+                req.file.buffer,        // Binary veri DB'ye
+                req.file.mimetype,
                 lat ? parseFloat(lat) : null,
                 lng ? parseFloat(lng) : null
             ]
         );
 
-        console.log(`✅ Yeni yer eklendi: ${title} (${normalizedRegion}), id=${result.rows[0].id}`);
+        console.log(`✅ Yer eklendi: ${title} (${normalizedRegion}), id=${result.rows[0].id}`);
         res.json({ success: true, place: result.rows[0] });
 
     } catch (err) {
         console.error("POST /upload hatası:", err.message);
-        res.status(500).json({ error: "Yükleme başarısız" });
+        res.status(500).json({ error: "Yükleme başarısız: " + err.message });
     }
 });
 
 // Yer sil
 app.delete("/places/:id", async (req, res) => {
     try {
-        const { id } = req.params;
-        const result = await pool.query(
-            "DELETE FROM places WHERE id = $1 RETURNING *",
-            [id]
-        );
-        if (result.rowCount === 0) {
-            return res.status(404).json({ error: "Yer bulunamadı" });
-        }
+        const result = await pool.query("DELETE FROM places WHERE id = $1 RETURNING *", [req.params.id]);
+        if (result.rowCount === 0) return res.status(404).json({ error: "Yer bulunamadı" });
         res.json({ success: true, deleted: result.rows[0] });
     } catch (err) {
-        console.error("DELETE /places/:id hatası:", err.message);
         res.status(500).json({ error: "Silme başarısız" });
     }
 });
@@ -211,28 +180,20 @@ app.delete("/places/:id", async (req, res) => {
 // Yer güncelle
 app.put("/places/:id", async (req, res) => {
     try {
-        const { id } = req.params;
         const { title, description, lat, lng, region } = req.body;
-
         const result = await pool.query(
-            `UPDATE places
-             SET title = COALESCE($1, title),
-                 description = COALESCE($2, description),
-                 lat = COALESCE($3, lat),
-                 lng = COALESCE($4, lng),
-                 region = COALESCE($5, region)
-             WHERE id = $6
-             RETURNING *`,
-            [title, description, lat, lng, region, id]
+            `UPDATE places SET
+                title = COALESCE($1, title),
+                description = COALESCE($2, description),
+                lat = COALESCE($3, lat),
+                lng = COALESCE($4, lng),
+                region = COALESCE($5, region)
+             WHERE id = $6 RETURNING *`,
+            [title, description, lat, lng, region, req.params.id]
         );
-
-        if (result.rowCount === 0) {
-            return res.status(404).json({ error: "Yer bulunamadı" });
-        }
-
+        if (result.rowCount === 0) return res.status(404).json({ error: "Yer bulunamadı" });
         res.json({ success: true, place: result.rows[0] });
     } catch (err) {
-        console.error("PUT /places/:id hatası:", err.message);
         res.status(500).json({ error: "Güncelleme başarısız" });
     }
 });
@@ -240,7 +201,6 @@ app.put("/places/:id", async (req, res) => {
 // ─── Sunucuyu Başlat ─────────────────────────────────────────────────────────
 
 const PORT = process.env.PORT || 5004;
-
 app.listen(PORT, async () => {
     console.log(`🚀 Sunucu port ${PORT}'de çalışıyor`);
     await initDB();
