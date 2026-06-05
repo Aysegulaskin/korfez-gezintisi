@@ -1,6 +1,7 @@
 const map = L.map('map', {
     zoomControl: true,
-    attributionControl: false
+    attributionControl: false,
+    minZoom: 8
 }).setView([39.50, 26.85], 10);
 
 // ─── API URL (en üstte tanımlanmalı) ────────────────────────────────────────
@@ -10,12 +11,7 @@ const apiUrl =
         ? "http://localhost:5004"
         : window.location.origin;
 
-const bounds = [
-    [39.10, 26.20],
-    [39.80, 27.30]
-];
-
-map.setMaxBounds(bounds);
+// maxBounds kaldırıldı - tüm koordinatlara gidilebilsin
 
 L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',

@@ -43,9 +43,10 @@ async function initDB() {
         `);
         console.log("✅ Veritabanı tablosu hazır");
 
-        // places.json varsa ve tablo boşsa, verileri aktar
+        // Tablo boşsa places.json'dan yükle — sadece bir kere
         const result = await pool.query("SELECT COUNT(*) FROM places");
         const count = parseInt(result.rows[0].count);
+        console.log(`ℹ️  Veritabanında ${count} yer mevcut`);
 
         if (count === 0) {
             const placesPath = path.join(__dirname, "data", "places.json");
@@ -68,12 +69,9 @@ async function initDB() {
                 }
                 console.log(`✅ ${places.length} yer places.json'dan aktarıldı`);
             }
-        } else {
-            console.log(`ℹ️  Veritabanında ${count} yer mevcut`);
         }
     } catch (err) {
         console.error("❌ Veritabanı başlatma hatası:", err.message);
-        console.error("   .env dosyasındaki DB_PASSWORD değerini kontrol edin.");
     }
 }
 
@@ -183,6 +181,7 @@ app.post("/upload", upload.single("photo"), async (req, res) => {
             ]
         );
 
+        console.log(`✅ Yeni yer eklendi: ${title} (${normalizedRegion}), id=${result.rows[0].id}`);
         res.json({ success: true, place: result.rows[0] });
 
     } catch (err) {
