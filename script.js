@@ -9,7 +9,7 @@ const apiUrl =
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1"
         ? "http://localhost:5004"
-        : window.location.origin;
+        : "https://korfez-backend.onrender.com";
 
 // maxBounds kaldırıldı - tüm koordinatlara gidilebilsin
 
